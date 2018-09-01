@@ -5,12 +5,18 @@ buildscript {
   repositories {
     google()
     jcenter()
+    mavenCentral()
   }
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     classpath 'com.android.tools.build:gradle:3.1.4'
+    classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
   }
 }
+
+apply plugin: 'com.github.dcendents.android-maven'
+
+group='com.github.yura-codir'
 
 android {
   compileSdkVersion 27
