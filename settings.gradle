@@ -1,2 +1,2 @@
-include "screens-common", "screens-android", "screens-js"
+include "common", "android", "js"
 

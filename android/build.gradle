@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-  api project(':screens-common')
+  api project(':common')
 }
 
 buildscript {
@@ -53,5 +53,5 @@ repositories {
 
 dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  expectedBy project(":screens-common")
+  expectedBy project(":common")
 }
