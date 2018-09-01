@@ -16,7 +16,7 @@ buildscript {
 
 apply plugin: 'com.github.dcendents.android-maven'
 
-group='com.github.yura-codir'
+group='com.github.yura-codir.magic-screens'
 
 android {
   compileSdkVersion 27
