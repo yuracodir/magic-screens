@@ -1,0 +1,33 @@
+apply plugin: 'kotlin-platform-js'
+apply plugin: 'kotlin2js'
+
+group 'com.estudio'
+version '1.0-SNAPSHOT'
+buildscript {
+  ext.kotlin_version = '1.2.61'
+  repositories {
+    jcenter()
+    google()
+  }
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+  }
+}
+
+repositories {
+  mavenCentral()
+  maven { url 'http://dl.bintray.com/kotlin/kotlin-eap-1.2' }
+}
+dependencies {
+  compile "org.jetbrains.kotlin:kotlin-stdlib-js"
+  expectedBy project(":screens-common")
+  compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+}
+
+compileKotlin2Js.configure {
+  kotlinOptions {
+    sourceMap = true
+    sourceMapEmbedSources = "always"
+    moduleKind = 'commonjs'
+  }
+}

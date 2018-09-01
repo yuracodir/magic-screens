@@ -1,0 +1,9 @@
+allprojects {
+  buildscript {
+    ext.kotlin_version = '1.2.61'
+  }
+}
+repositories {
+  maven { url 'http://dl.bintray.com/kotlin/kotlin-eap-1.2' }
+  mavenCentral()
+}
