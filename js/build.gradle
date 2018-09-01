@@ -1,6 +1,16 @@
 apply plugin: 'kotlin-platform-js'
 apply plugin: 'kotlin2js'
 
+buildscript {
+  repositories {
+    google()
+    jcenter()
+  }
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+  }
+}
+
 dependencies {
   compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
   expectedBy project(":common")
