@@ -1,0 +1,7 @@
+apply plugin: 'kotlin-platform-jvm'
+apply plugin: 'java-library'
+
+dependencies {
+  compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  expectedBy project(":common")
+}

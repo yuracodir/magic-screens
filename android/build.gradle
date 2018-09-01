@@ -3,23 +3,11 @@ apply plugin: 'kotlin-platform-android'
 
 buildscript {
   repositories {
-    maven { url 'https://maven.google.com' }
     jcenter()
     google()
-    mavenCentral()
-    maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.2" }
   }
   dependencies {
     classpath 'com.android.tools.build:gradle:3.1.4'
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-  }
-}
-
-allprojects {
-  repositories {
-    maven { url 'https://maven.google.com' }
-    maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.2" }
-    jcenter()
   }
 }
 
@@ -27,28 +15,14 @@ android {
   compileSdkVersion 27
   buildToolsVersion "27.0.3"
   defaultConfig {
-    minSdkVersion 18
+    minSdkVersion 14
     targetSdkVersion 27
   }
 }
 
-dependencies {
-  api project(':common')
-}
-
-buildscript {
-  ext.kotlin_version = '1.2.61'
-
-  repositories {
-    mavenCentral()
-  }
-  dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-  }
-}
-
 repositories {
-  mavenCentral()
+  jcenter()
+  google()
 }
 
 dependencies {
