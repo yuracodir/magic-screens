@@ -1,12 +1,6 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-platform-android'
+
 
 buildscript {
-  repositories {
-    google()
-    jcenter()
-    mavenCentral()
-  }
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     classpath 'com.android.tools.build:gradle:3.1.4'
@@ -15,8 +9,9 @@ buildscript {
 }
 
 apply plugin: 'com.github.dcendents.android-maven'
-
 group='com.github.yura-codir.magic-screens'
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-platform-android'
 
 android {
   compileSdkVersion 27
@@ -25,11 +20,6 @@ android {
     minSdkVersion 14
     targetSdkVersion 27
   }
-}
-
-repositories {
-  jcenter()
-  google()
 }
 
 dependencies {

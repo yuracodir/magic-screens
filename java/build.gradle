@@ -2,10 +2,6 @@ apply plugin: 'kotlin-platform-jvm'
 apply plugin: 'java-library'
 
 buildscript {
-  repositories {
-    google()
-    jcenter()
-  }
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
