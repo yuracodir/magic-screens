@@ -1,7 +1,5 @@
 apply plugin: 'kotlin-platform-common'
 
-group='com.github.yura-codir.magic-screens.common'
-
 buildscript {
   repositories {
     mavenCentral()
@@ -10,6 +8,10 @@ buildscript {
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
+}
+
+repositories {
+  mavenCentral()
 }
 
 dependencies {
