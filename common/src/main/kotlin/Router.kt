@@ -11,7 +11,7 @@ interface Screen<R : Router, A> {
   var args: A
   var state: ScreenState
   var router: R
-  fun create() // do not navigate in same router here
+  fun create() // do not touch this.router here
   fun pause()
   fun resume()
   fun destroy()

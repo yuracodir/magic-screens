@@ -1,20 +1,22 @@
-package com.estudio.magic.android
+package com.estudio.magic.js
 
-import android.content.Context
-import android.view.View
-import android.view.ViewGroup
 import com.estudio.magic.ContainerScreen
 import com.estudio.magic.Router
 import com.estudio.magic.Screen
 import com.estudio.magic.ScreenState
+import org.w3c.dom.Element
+import org.w3c.dom.HTMLElement
+import org.w3c.dom.get
+import kotlin.browser.document
 
-abstract class AndroidContainerScreen<Ro : Router, A : Any>(context: Context, router: Ro) :
-  AndroidScreen<Ro, A>(context, router), ContainerScreen {
 
-  protected lateinit var container: ViewGroup
+abstract class JsContainerScreen<R : Router, A : Any>(override var router: R) :
+  JsScreen<R, A>(router), ContainerScreen {
 
-  override fun bind(view: View) {
-    container = view.findViewById(R.id.container)
+  lateinit var container: HTMLElement
+
+  override fun bind(view: Element) {
+    container = view.getElementsByClassName("container")[0] as HTMLElement
   }
 
   override fun pause() {
@@ -47,42 +49,45 @@ abstract class AndroidContainerScreen<Ro : Router, A : Any>(context: Context, ro
   }
 
   override fun attach(screen: Screen<*, *>) {
-    if (screen is AndroidScreen<*, *>) {
-      container.addView(screen.root)
+    if (screen is JsScreen<*, *>) {
+      container.appendChild(screen.root)
     }
   }
 
   override fun detach(screen: Screen<*, *>) {
-    if (screen is AndroidScreen<*, *>) {
-      container.removeView(screen.root)
+    if (screen is JsScreen<*, *>) {
+      container.removeChild(screen.root)
     }
   }
 }
 
-abstract class AndroidScreen<R : Router, A : Any>(val context: Context, override var router: R) : Screen<R, A> {
-  lateinit var root: View
+abstract class JsScreen<R : Router, A : Any>(override var router: R) : Screen<R, A> {
+
   override var state = ScreenState.NONE
   override lateinit var args: A
 
-  abstract val layoutId: Int
+  var root: Element = document.createElement("div")
 
-  abstract fun bind(view: View)
+  abstract fun bind(view: Element)
 
   override fun create() {
-    root = View.inflate(context, layoutId, null)
     bind(root)
   }
 
-  override fun pause() {
-  }
-
-  override fun resume() {
-  }
-
   override fun destroy() {
+
   }
 
   override fun onBack(): Boolean {
     return router.back()
   }
+
+  override fun pause() {
+
+  }
+
+  override fun resume() {
+
+  }
+
 }
