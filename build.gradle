@@ -2,12 +2,6 @@ allprojects {
 
   buildscript {
     ext.kotlin_version = '1.2.61'
-
-    repositories {
-      google()
-      jcenter()
-      mavenCentral()
-    }
   }
 
   repositories {
