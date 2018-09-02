@@ -8,6 +8,6 @@ allprojects {
     mavenCentral()
   }
 
-  group 'com.estudio.magic'
+  group 'com.github.yura-codir.magic-screens'
   version '1.0.0-SNAPSHOT'
 }
