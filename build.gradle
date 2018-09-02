@@ -9,7 +9,5 @@ allprojects {
     jcenter()
     mavenCentral()
   }
-
-  group 'com.github.yura-codir.magic-screens'
   version '1.0.0-SNAPSHOT'
 }

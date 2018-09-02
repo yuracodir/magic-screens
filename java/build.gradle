@@ -1,6 +1,8 @@
 apply plugin: 'kotlin-platform-jvm'
 apply plugin: 'java-library'
 
+group='com.github.yura-codir.magic-screens.java'
+
 buildscript {
   repositories {
     mavenCentral()

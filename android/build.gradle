@@ -1,4 +1,4 @@
-
+group='com.github.yura-codir.magic-screens.android'
 
 buildscript {
   repositories {
@@ -15,8 +15,6 @@ buildscript {
 }
 
 apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.yura-codir.magic-screens.android'
-
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-platform-android'
 

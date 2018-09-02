@@ -1,5 +1,7 @@
 apply plugin: 'kotlin-platform-common'
 
+group='com.github.yura-codir.magic-screens.common'
+
 buildscript {
   repositories {
     mavenCentral()
