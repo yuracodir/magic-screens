@@ -2,18 +2,10 @@ apply plugin: 'kotlin-platform-jvm'
 apply plugin: 'java-library'
 
 buildscript {
-  repositories {
-    mavenCentral()
-  }
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
 }
-
-repositories {
-  mavenCentral()
-}
-
 dependencies {
   compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   expectedBy project(":common")

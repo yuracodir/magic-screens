@@ -2,6 +2,18 @@ allprojects {
   version '1.0.0-SNAPSHOT'
   buildscript {
     ext.kotlin_version = '1.2.61'
+
+    repositories {
+      google()
+      jcenter()
+      mavenCentral()
+    }
+  }
+
+  repositories {
+    google()
+    jcenter()
+    mavenCentral()
   }
 }
 
