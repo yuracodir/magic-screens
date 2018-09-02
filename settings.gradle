@@ -1,1 +1,1 @@
-include "common", "android", "js", "java"
+include "common", "js", "java"
