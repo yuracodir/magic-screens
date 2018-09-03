@@ -66,7 +66,7 @@ abstract class JsScreen<R : Router, A : Any>(override var router: R) : Screen<R,
   override var state = ScreenState.NONE
   override lateinit var args: A
 
-  var root: Element = document.createElement("div")
+  abstract var root: Element
 
   abstract fun bind(view: Element)
 
