@@ -1,5 +1,4 @@
 apply plugin: 'kotlin-platform-js'
-apply plugin: 'kotlin2js'
 
 buildscript {
   dependencies {
@@ -10,12 +9,4 @@ buildscript {
 dependencies {
   compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
   expectedBy project(":common")
-}
-
-compileKotlin2Js.configure {
-  kotlinOptions {
-    sourceMap = true
-    sourceMapEmbedSources = "always"
-    moduleKind = 'commonjs'
-  }
 }
