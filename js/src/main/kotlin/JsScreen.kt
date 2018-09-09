@@ -64,7 +64,7 @@ abstract class JsContainerScreen<R : Router, A : Any>(override var router: R) :
 abstract class JsScreen<R : Router, A : Any>(override var router: R) : Screen<R, A> {
 
   override var state = ScreenState.NONE
-  override lateinit var args: A
+  override var args: A? = null
 
   abstract var root: Element
 

@@ -1,15 +1,18 @@
 package com.estudio.magic.android
 
+import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import com.estudio.magic.ContainerScreen
 import com.estudio.magic.Router
 import com.estudio.magic.Screen
 import com.estudio.magic.ScreenState
 
-abstract class AndroidContainerScreen<Ro : Router, A : Any>(context: Context, router: Ro) :
-  AndroidScreen<Ro, A>(context, router), ContainerScreen {
+abstract class AndroidContainerScreen<Ro : Router, A : Any>(
+  context: Context,
+  router: Ro) : AndroidScreen<Ro, A>(context, router), ContainerScreen {
 
   protected lateinit var container: ViewGroup
 
@@ -59,10 +62,13 @@ abstract class AndroidContainerScreen<Ro : Router, A : Any>(context: Context, ro
   }
 }
 
-abstract class AndroidScreen<R : Router, A : Any>(val context: Context, override var router: R) : Screen<R, A> {
+abstract class AndroidScreen<R : Router, A : Any>(
+  protected val context: Context,
+  override var router: R) : Screen<R, A> {
+
   lateinit var root: View
   override var state = ScreenState.NONE
-  override lateinit var args: A
+  override var args: A? = null
 
   abstract val layoutId: Int
 
@@ -84,5 +90,10 @@ abstract class AndroidScreen<R : Router, A : Any>(val context: Context, override
 
   override fun onBack(): Boolean {
     return router.back()
+  }
+
+  fun hideKeyboard() {
+    val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(root.windowToken, 0)
   }
 }

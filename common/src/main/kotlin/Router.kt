@@ -4,11 +4,11 @@ interface ContainerScreen {
   val childRouter: Router
   fun attach(screen: Screen<*, *>)
   fun detach(screen: Screen<*, *>)
-  fun instantiate(mark: String): Screen<*, *>?
+  fun instantiate(mark: String): Screen<*, Any>?
 }
 
-interface Screen<R : Router, A> {
-  var args: A
+interface Screen<R : Router, A : Any> {
+  var args: A?
   var state: ScreenState
   var router: R
   fun create() // do not touch this.router here
@@ -26,8 +26,8 @@ enum class ScreenState {
   DESTROYED,
 }
 
-open class Router(val container: ContainerScreen) {
-  private val history: Stack<StackEntry<*>> = Stack()
+open class Router(protected val container: ContainerScreen) {
+  private val history: Stack<StackEntry> = Stack()
 
   fun createScreen(screen: Screen<*, *>) {
     if (screen.state == ScreenState.NONE) {
@@ -57,17 +57,15 @@ open class Router(val container: ContainerScreen) {
     }
   }
 
-  open fun <A> forward(mark: String, args: A) {
+  open fun forward(mark: String, args: Any? = null) {
     val screen = container.instantiate(mark)
     if (screen != null) {
       if (!history.empty()) {
-        val oldScreen: Screen<*, *> = history.peek().screen
+        val oldScreen: Screen<*, Any> = history.peek().screen
         pauseScreen(oldScreen)
         container.detach(oldScreen)
       }
-      if (args != null) {
-        (screen as Screen<*, A>).args = args
-      }
+      screen.args = args
       history.push(StackEntry(mark, screen))
       createScreen(screen)
       container.attach(screen)
@@ -75,7 +73,7 @@ open class Router(val container: ContainerScreen) {
     }
   }
 
-  open fun <A> replace(mark: String, args: A) {
+  open fun replace(mark: String, args: Any? = null) {
     val screen = container.instantiate(mark)
       ?: throw Throwable("$mark screen = null")
     if (!history.empty()) {
@@ -86,21 +84,19 @@ open class Router(val container: ContainerScreen) {
     }
 
     history.set(StackEntry(mark, screen))
-    if (args != null) {
-      (screen as Screen<*, A>).args = args
-    }
+    screen.args = args
     createScreen(screen)
     container.attach(screen)
     resumeScreen(screen)
   }
 
-  open fun <A> back(mark: String, args: A): Boolean {
-    val current: StackEntry<*> = history.pop()
+  open fun back(mark: String, args: Any? = null): Boolean {
+    val current: StackEntry = history.pop()
 
     if (history.empty()) {
       return false
     }
-    var backTo: StackEntry<*> = history.peek()
+    var backTo: StackEntry = history.peek()
 
     pauseScreen(current.screen)
     container.detach(current.screen)
@@ -116,14 +112,12 @@ open class Router(val container: ContainerScreen) {
     }
     container.attach(backTo.screen)
 
-    if (args != Unit) {
-      (backTo.screen as Screen<Router, A>).args = args
-    }
+    backTo.screen.args = args
     resumeScreen(backTo.screen)
     return true
   }
 
-  open fun <A> root(mark: String, args: A) {
+  open fun root(mark: String, args: Any? = null) {
     if (!history.empty()) {
       var screen = currentScreen()
       pauseScreen(screen)
@@ -215,5 +209,5 @@ class Stack<T> {
   class Node<U>(val prev: Node<U>?, val obj: U)
 }
 
-data class StackEntry<A>(val mark: String, val screen: Screen<*, A>)
+data class StackEntry(val mark: String, val screen: Screen<*, Any>)
 
