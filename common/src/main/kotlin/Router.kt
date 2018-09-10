@@ -91,28 +91,24 @@ open class Router(protected val container: ContainerScreen) {
   }
 
   open fun back(mark: String, args: Any? = null): Boolean {
-    val current: StackEntry = history.pop()
-
     if (history.empty()) {
       return false
     }
     var backTo: StackEntry = history.peek()
+    pauseScreen(backTo.screen)
+    container.detach(backTo.screen)
 
-    pauseScreen(current.screen)
-    container.detach(current.screen)
-    destroyScreen(current.screen)
-
-    while (history.size > 1) {
+    while (history.size > 0) {
+      backTo = history.pop()
       if (backTo.mark == mark) {
         break
       }
-      pauseScreen(backTo.screen)
       destroyScreen(backTo.screen)
-      backTo = history.pop()
     }
-    container.attach(backTo.screen)
 
+    history.push(backTo)
     backTo.screen.args = args
+    container.attach(backTo.screen)
     resumeScreen(backTo.screen)
     return true
   }
