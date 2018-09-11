@@ -4,7 +4,7 @@ interface ContainerScreen {
   val childRouter: Router
   fun attach(screen: Screen<*, *>)
   fun detach(screen: Screen<*, *>)
-  fun instantiate(mark: String): Screen<*, Any>?
+  fun instantiate(mark: String): Screen<*, *>?
 }
 
 interface Screen<R : Router, A : Any> {
@@ -61,11 +61,11 @@ open class Router(protected val container: ContainerScreen) {
     val screen = container.instantiate(mark)
     if (screen != null) {
       if (!history.empty()) {
-        val oldScreen: Screen<*, Any> = history.peek().screen
+        val oldScreen: Screen<*, *> = history.peek().screen
         pauseScreen(oldScreen)
         container.detach(oldScreen)
       }
-      screen.args = args
+      (screen as Screen<*, Any>).args = args
       history.push(StackEntry(mark, screen))
       createScreen(screen)
       container.attach(screen)
@@ -84,7 +84,7 @@ open class Router(protected val container: ContainerScreen) {
     }
 
     history.set(StackEntry(mark, screen))
-    screen.args = args
+    (screen as Screen<*, Any>).args = args
     createScreen(screen)
     container.attach(screen)
     resumeScreen(screen)
@@ -107,13 +107,13 @@ open class Router(protected val container: ContainerScreen) {
     }
 
     history.push(backTo)
-    backTo.screen.args = args
+    (backTo.screen as Screen<*, Any>).args = args
     container.attach(backTo.screen)
     resumeScreen(backTo.screen)
     return true
   }
 
-  open fun root(mark: String, args: Any? = null) {
+  open fun root(mark: String, args: Any) {
     if (!history.empty()) {
       var screen = currentScreen()
       pauseScreen(screen)
@@ -128,9 +128,9 @@ open class Router(protected val container: ContainerScreen) {
     forward(mark, args)
   }
 
-  open fun back(): Boolean {
+  open fun back(args: Any? = null): Boolean {
     return if (history.size > 1) {
-      back(history.get(history.size - 2).mark, Unit)
+      back(history.get(history.size - 2).mark, args)
     } else {
       false
     }
@@ -205,5 +205,5 @@ class Stack<T> {
   class Node<U>(val prev: Node<U>?, val obj: U)
 }
 
-data class StackEntry(val mark: String, val screen: Screen<*, Any>)
+data class StackEntry(val mark: String, val screen: Screen<*, *>)
 
