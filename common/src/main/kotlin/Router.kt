@@ -113,7 +113,7 @@ open class Router(protected val container: ContainerScreen) {
     return true
   }
 
-  open fun root(mark: String, args: Any) {
+  open fun root(mark: String, args: Any? = null) {
     if (!history.empty()) {
       var screen = currentScreen()
       pauseScreen(screen)
