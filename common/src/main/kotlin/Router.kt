@@ -94,22 +94,23 @@ open class Router(protected val container: ContainerScreen) {
     if (history.empty()) {
       return false
     }
-    var backTo: StackEntry = history.peek()
-    pauseScreen(backTo.screen)
-    container.detach(backTo.screen)
-
+    var screen: StackEntry = history.pop()
+    pauseScreen(screen.screen)
+    container.detach(screen.screen)
+    destroyScreen(screen.screen)
+    screen = history.peek()
     while (history.size > 0) {
-      backTo = history.pop()
-      if (backTo.mark == mark) {
+      screen = history.pop()
+      if (screen.mark == mark) {
         break
       }
-      destroyScreen(backTo.screen)
+      destroyScreen(screen.screen)
     }
 
-    history.push(backTo)
-    (backTo.screen as Screen<*, Any>).args = args
-    container.attach(backTo.screen)
-    resumeScreen(backTo.screen)
+    history.push(screen)
+    (screen.screen as Screen<*, Any>).args = args
+    container.attach(screen.screen)
+    resumeScreen(screen.screen)
     return true
   }
 
@@ -143,6 +144,8 @@ open class Router(protected val container: ContainerScreen) {
   fun isEmpty(): Boolean {
     return history.size == 0
   }
+
+  override fun toString() = history.toString()
 }
 
 class Stack<T> {
@@ -203,7 +206,19 @@ class Stack<T> {
   }
 
   class Node<U>(val prev: Node<U>?, val obj: U)
+
+  override fun toString(): String {
+    var path = ""
+    var item = last
+    while (item != null) {
+      path = "> ${item.obj.toString()}" + path
+      item = item.prev
+    }
+    return path
+  }
 }
 
-data class StackEntry(val mark: String, val screen: Screen<*, *>)
+data class StackEntry(val mark: String, val screen: Screen<*, *>) {
+  override fun toString() = mark
+}
 
