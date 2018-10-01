@@ -18,6 +18,13 @@ interface Screen<R : Router, A : Any> {
   fun onBack(): Boolean // is Handled ?
 }
 
+interface ScreenLifecycle {
+  fun create(screen: Screen<*, *>)
+  fun pause(screen: Screen<*, *>)
+  fun resume(screen: Screen<*, *>)
+  fun destroy(screen: Screen<*, *>)
+}
+
 enum class ScreenState {
   NONE,
   CREATED,
@@ -26,50 +33,55 @@ enum class ScreenState {
   DESTROYED,
 }
 
-open class Router(protected val container: ContainerScreen) {
-  private val history: Stack<StackEntry> = Stack()
-
-  fun createScreen(screen: Screen<*, *>) {
+open class DefaultScreenLifecycle :ScreenLifecycle {
+  override fun create(screen: Screen<*, *>) {
     if (screen.state == ScreenState.NONE) {
       screen.state = ScreenState.CREATED
       screen.create()
     }
   }
 
-  fun resumeScreen(screen: Screen<*, *>) {
+  override fun resume(screen: Screen<*, *>) {
     if (screen.state == ScreenState.CREATED || screen.state == ScreenState.PAUSED) {
       screen.state = ScreenState.RESUMED
       screen.resume()
     }
   }
 
-  fun pauseScreen(screen: Screen<*, *>) {
+  override fun pause(screen: Screen<*, *>) {
     if (screen.state == ScreenState.RESUMED) {
       screen.state = ScreenState.PAUSED
       screen.pause()
     }
   }
 
-  fun destroyScreen(screen: Screen<*, *>) {
+  override fun destroy(screen: Screen<*, *>) {
     if (screen.state == ScreenState.PAUSED || screen.state == ScreenState.CREATED) {
       screen.state = ScreenState.DESTROYED
       screen.destroy()
     }
   }
+}
+
+open class Router(
+  protected val container: ContainerScreen,
+  val lifecycle: ScreenLifecycle = DefaultScreenLifecycle()) {
+
+  private val history: Stack<StackEntry> = Stack()
 
   open fun forward(mark: String, args: Any? = null) {
     val screen = container.instantiate(mark)
     if (screen != null) {
       if (!history.empty()) {
         val oldScreen: Screen<*, *> = history.peek().screen
-        pauseScreen(oldScreen)
+        lifecycle.pause(oldScreen)
         container.detach(oldScreen)
       }
       (screen as Screen<*, Any>).args = args
       history.push(StackEntry(mark, screen))
-      createScreen(screen)
+      lifecycle.create(screen)
       container.attach(screen)
-      resumeScreen(screen)
+      lifecycle.resume(screen)
     }
   }
 
@@ -78,63 +90,63 @@ open class Router(protected val container: ContainerScreen) {
       ?: throw Throwable("$mark screen = null")
     if (!history.empty()) {
       val oldScreen = history.peek().screen
-      pauseScreen(oldScreen)
+      lifecycle.pause(oldScreen)
       container.detach(oldScreen)
-      destroyScreen(oldScreen)
+      lifecycle.destroy(oldScreen)
     }
 
     history.set(StackEntry(mark, screen))
     (screen as Screen<*, Any>).args = args
-    createScreen(screen)
+    lifecycle.create(screen)
     container.attach(screen)
-    resumeScreen(screen)
+    lifecycle.resume(screen)
   }
 
-  open fun back(mark: String, args: Any? = null): Boolean {
+  open fun back(mark: String? = null, args: Any? = null): Boolean {
     if (history.empty()) {
       return false
     }
+    var marker = mark
+    if (marker == null) {
+      if (history.size > 1) {
+        marker = history.get(history.size - 2).mark
+      } else {
+        return false
+      }
+    }
     var screen: StackEntry = history.pop()
-    pauseScreen(screen.screen)
+    lifecycle.pause(screen.screen)
     container.detach(screen.screen)
-    destroyScreen(screen.screen)
+    lifecycle.destroy(screen.screen)
     screen = history.peek()
     while (history.size > 0) {
       screen = history.pop()
-      if (screen.mark == mark) {
+      if (screen.mark == marker) {
         break
       }
-      destroyScreen(screen.screen)
+      lifecycle.destroy(screen.screen)
     }
 
     history.push(screen)
     (screen.screen as Screen<*, Any>).args = args
     container.attach(screen.screen)
-    resumeScreen(screen.screen)
+    lifecycle.resume(screen.screen)
     return true
   }
 
   open fun root(mark: String, args: Any? = null) {
     if (!history.empty()) {
       var screen = currentScreen()
-      pauseScreen(screen)
+      lifecycle.pause(screen)
       container.detach(screen)
-      destroyScreen(screen)
+      lifecycle.destroy(screen)
       while (history.size > 0) {
         screen = history.pop().screen
-        pauseScreen(screen)
-        destroyScreen(screen)
+        lifecycle.pause(screen)
+        lifecycle.destroy(screen)
       }
     }
     forward(mark, args)
-  }
-
-  open fun back(args: Any? = null): Boolean {
-    return if (history.size > 1) {
-      back(history.get(history.size - 2).mark, args)
-    } else {
-      false
-    }
   }
 
   fun currentScreen(): Screen<*, *> {

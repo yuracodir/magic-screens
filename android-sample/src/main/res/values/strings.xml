@@ -1,0 +1,19 @@
+<resources>
+  <string name="app_name">Sample</string>
+  <string name="main_root">Set root</string>
+  <string name="main_root_desc">Remove history and start root screen</string>
+  <string name="main_forward">Forward</string>
+  <string name="main_forward_desc">Add this screen to end of history</string>
+  <string name="main_replace">Replace</string>
+  <string name="main_replace_desc">Replace current screen in history</string>
+  <string name="main_back">Back</string>
+  <string name="main_back_desc">Back to previous screen without arguments</string>
+  <string name="main_color">Change color</string>
+  <string name="main_color_desc">Start screen to pick color, and go back with arguments</string>
+  <string name="main_title">Navigation</string>
+
+  <string name="color_back">Back</string>
+  <string name="color_title">Change color</string>
+  <string name="main_pager">Pager</string>
+  <string name="main_pager_desc">screens with horizontal scroll based on recycler view</string>
+</resources>

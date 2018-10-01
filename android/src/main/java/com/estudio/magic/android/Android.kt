@@ -12,7 +12,8 @@ import com.estudio.magic.ScreenState
 
 abstract class AndroidContainerScreen<Ro : Router, A : Any>(
   context: Context,
-  router: Ro) : AndroidScreen<Ro, A>(context, router), ContainerScreen {
+  router: Ro
+) : AndroidScreen<Ro, A>(context, router), ContainerScreen {
 
   protected lateinit var container: ViewGroup
 
@@ -25,7 +26,7 @@ abstract class AndroidContainerScreen<Ro : Router, A : Any>(
     if (childRouter.isEmpty()) {
       return
     }
-    childRouter.pauseScreen(childRouter.currentScreen())
+    router.lifecycle.pause(childRouter.currentScreen())
   }
 
   override fun resume() {
@@ -33,7 +34,7 @@ abstract class AndroidContainerScreen<Ro : Router, A : Any>(
     if (childRouter.isEmpty()) {
       return
     }
-    childRouter.resumeScreen(childRouter.currentScreen())
+    router.lifecycle.resume(childRouter.currentScreen())
   }
 
   override fun destroy() {
@@ -41,7 +42,7 @@ abstract class AndroidContainerScreen<Ro : Router, A : Any>(
     if (childRouter.isEmpty()) {
       return
     }
-    childRouter.destroyScreen(childRouter.currentScreen())
+    router.lifecycle.destroy(childRouter.currentScreen())
   }
 
   override fun onBack(): Boolean {
@@ -64,7 +65,8 @@ abstract class AndroidContainerScreen<Ro : Router, A : Any>(
 
 abstract class AndroidScreen<R : Router, A : Any>(
   protected val context: Context,
-  override var router: R) : Screen<R, A> {
+  override var router: R
+) : Screen<R, A> {
 
   lateinit var root: View
   override var state = ScreenState.NONE
