@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.item_menu.view.*
 import kotlinx.android.synthetic.main.screen_main.view.*
 
 class MainScreen(context: Context, router: ActivityRouter) :
-  AndroidScreen<ActivityRouter, Any>(context, router),
+  AndroidScreen<ActivityRouter>(context, router),
   MenuItemClickListener {
 
   companion object {
@@ -25,8 +25,9 @@ class MainScreen(context: Context, router: ActivityRouter) :
     const val MENU_FORWARD = 1
     const val MENU_REPLACE = 2
     const val MENU_BACK = 3
-    const val MENU_COLOR = 4
-    const val MENU_PAGER = 5
+    const val MENU_BACK_TO = 4
+    const val MENU_COLOR = 5
+    const val MENU_PAGER = 6
   }
 
   private var color: Int = 0
@@ -63,6 +64,11 @@ class MainScreen(context: Context, router: ActivityRouter) :
           context.getString(R.string.main_back_desc)
         ),
         MenuItem(
+          MENU_BACK_TO,
+          context.getString(R.string.main_back_to),
+          context.getString(R.string.main_back_to_desc)
+        ),
+        MenuItem(
           MENU_COLOR,
           context.getString(R.string.main_color),
           context.getString(R.string.main_color_desc)
@@ -92,6 +98,7 @@ class MainScreen(context: Context, router: ActivityRouter) :
       MENU_FORWARD -> router.forward(SCREEN_FORWARD)
       MENU_REPLACE -> router.replace(SCREEN_REPLACE)
       MENU_BACK -> router.back()
+      MENU_BACK_TO -> router.back(SCREEN_REPLACE)
       MENU_COLOR -> router.forward(SCREEN_COLOR, ColorArguments(color) {
         this.color = it
       })
@@ -105,10 +112,12 @@ class MainScreen(context: Context, router: ActivityRouter) :
   }
 }
 
-class MenuAdapter(private val listener: MenuItemClickListener) : RecyclerView.Adapter<MenuViewHolder>() {
+class MenuAdapter(private val listener: MenuItemClickListener) :
+  RecyclerView.Adapter<MenuViewHolder>() {
   private val items = arrayListOf<MenuItem>()
 
-  override fun onCreateViewHolder(p0: ViewGroup, p1: Int) = MenuViewHolder(inflate(p0, R.layout.item_menu), listener)
+  override fun onCreateViewHolder(p0: ViewGroup, p1: Int) =
+    MenuViewHolder(inflate(p0, R.layout.item_menu), listener)
 
   override fun getItemCount() = items.size
 
@@ -116,7 +125,8 @@ class MenuAdapter(private val listener: MenuItemClickListener) : RecyclerView.Ad
     holder.actual = items[holder.adapterPosition]
   }
 
-  private fun inflate(parent: ViewGroup, res: Int) = LayoutInflater.from(parent.context).inflate(res, parent, false)
+  private fun inflate(parent: ViewGroup, res: Int) =
+    LayoutInflater.from(parent.context).inflate(res, parent, false)
 
   fun setItems(items: List<MenuItem>) {
     this.items.clear()

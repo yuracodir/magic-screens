@@ -16,4 +16,6 @@
   <string name="color_title">Change color</string>
   <string name="main_pager">Pager</string>
   <string name="main_pager_desc">screens with horizontal scroll based on recycler view</string>
+  <string name="main_back_to_desc">to replace screen</string>
+  <string name="main_back_to">Back to</string>
 </resources>

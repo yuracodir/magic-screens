@@ -4,12 +4,16 @@ import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.widget.SeekBar
-import com.estudio.magic.Router
 import com.estudio.magic.android.AndroidScreen
+import com.estudio.magic.com.estudio.magic.ScreenRouter
 import kotlinx.android.synthetic.main.screen_color.view.*
 
-class ColorScreen(context: Context, router: Router) :
-  AndroidScreen<Router, ColorArguments>(context, router),
+class ColorScreen(
+  context: Context,
+  router: ScreenRouter,
+  private val args: ColorArguments?
+) :
+  AndroidScreen<ScreenRouter>(context, router),
   SeekBar.OnSeekBarChangeListener, View.OnClickListener {
 
   override fun onClick(v: View?) {
