@@ -8,11 +8,11 @@ import android.view.inputmethod.InputMethodManager
 import com.estudio.magic.ContainerScreen
 import com.estudio.magic.Router
 import com.estudio.magic.Screen
-import com.estudio.magic.ScreenState
+import com.estudio.magic.ScreenRouter
 
-abstract class AndroidContainerScreen<Ro : Router, A : Any>(
-  context: Context,
-  router: Ro) : AndroidScreen<Ro, A>(context, router), ContainerScreen {
+abstract class AndroidContainerScreen<Ro : Router>(context: Context, router: Ro) :
+  AndroidScreen<Ro>(context, router),
+  ContainerScreen {
 
   protected lateinit var container: ViewGroup
 
@@ -22,53 +22,41 @@ abstract class AndroidContainerScreen<Ro : Router, A : Any>(
 
   override fun pause() {
     super.pause()
-    if (childRouter.isEmpty()) {
-      return
-    }
-    childRouter.pauseScreen(childRouter.currentScreen())
+    childRouter.navigator.pause()
   }
 
   override fun resume() {
     super.resume()
-    if (childRouter.isEmpty()) {
-      return
-    }
-    childRouter.resumeScreen(childRouter.currentScreen())
+    childRouter.navigator.resume()
   }
 
   override fun destroy() {
     super.destroy()
-    if (childRouter.isEmpty()) {
-      return
-    }
-    childRouter.destroyScreen(childRouter.currentScreen())
+    childRouter.navigator.destroy()
   }
 
   override fun onBack(): Boolean {
-    val childGoBack = !childRouter.isEmpty() && childRouter.currentScreen().onBack()
+    val childGoBack = childRouter.currentScreen?.onBack() == true
     return childGoBack || super.onBack()
   }
 
-  override fun attach(screen: Screen<*, *>) {
-    if (screen is AndroidScreen<*, *>) {
+  override fun attach(screen: Screen<*>) {
+    if (screen is AndroidScreen<*>) {
       container.addView(screen.root)
     }
   }
 
-  override fun detach(screen: Screen<*, *>) {
-    if (screen is AndroidScreen<*, *>) {
+  override fun detach(screen: Screen<*>) {
+    if (screen is AndroidScreen<*>) {
       container.removeView(screen.root)
     }
   }
 }
 
-abstract class AndroidScreen<R : Router, A : Any>(
-  protected val context: Context,
-  override var router: R) : Screen<R, A> {
+abstract class AndroidScreen<R : Router>
+  (protected val context: Context, override var router: R) : Screen<R> {
 
   lateinit var root: View
-  override var state = ScreenState.NONE
-  override var args: A? = null
 
   abstract val layoutId: Int
 
@@ -89,7 +77,11 @@ abstract class AndroidScreen<R : Router, A : Any>(
   }
 
   override fun onBack(): Boolean {
-    return router.back()
+    val router = this.router
+    if (router is ScreenRouter) {
+      return router.back()
+    }
+    return false
   }
 
   fun hideKeyboard() {

@@ -1,1 +1,2 @@
+include ':android-sample'
 include "common", "js", "java", "android"

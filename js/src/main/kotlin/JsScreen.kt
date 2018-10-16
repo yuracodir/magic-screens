@@ -3,15 +3,14 @@ package com.estudio.magic.js
 import com.estudio.magic.ContainerScreen
 import com.estudio.magic.Router
 import com.estudio.magic.Screen
-import com.estudio.magic.ScreenState
+import com.estudio.magic.ScreenRouter
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.get
-import kotlin.browser.document
 
 
-abstract class JsContainerScreen<R : Router, A : Any>(override var router: R) :
-  JsScreen<R, A>(router), ContainerScreen {
+abstract class JsContainerScreen<R : Router>(override var router: R) :
+  JsScreen<R>(router), ContainerScreen {
 
   lateinit var container: HTMLElement
 
@@ -21,50 +20,38 @@ abstract class JsContainerScreen<R : Router, A : Any>(override var router: R) :
 
   override fun pause() {
     super.pause()
-    if (childRouter.isEmpty()) {
-      return
-    }
-    childRouter.pauseScreen(childRouter.currentScreen())
+    childRouter.navigator.pause()
   }
 
   override fun resume() {
     super.resume()
-    if (childRouter.isEmpty()) {
-      return
-    }
-    childRouter.resumeScreen(childRouter.currentScreen())
+    childRouter.navigator.resume()
   }
 
   override fun destroy() {
     super.destroy()
-    if (childRouter.isEmpty()) {
-      return
-    }
-    childRouter.destroyScreen(childRouter.currentScreen())
+    childRouter.navigator.destroy()
   }
 
   override fun onBack(): Boolean {
-    val childGoBack = !childRouter.isEmpty() && childRouter.currentScreen().onBack()
+    val childGoBack = childRouter.currentScreen?.onBack() == true
     return childGoBack || super.onBack()
   }
 
-  override fun attach(screen: Screen<*, *>) {
-    if (screen is JsScreen<*, *>) {
+  override fun attach(screen: Screen<*>) {
+    if (screen is JsScreen<*>) {
       container.appendChild(screen.root)
     }
   }
 
-  override fun detach(screen: Screen<*, *>) {
-    if (screen is JsScreen<*, *>) {
+  override fun detach(screen: Screen<*>) {
+    if (screen is JsScreen<*>) {
       container.removeChild(screen.root)
     }
   }
 }
 
-abstract class JsScreen<R : Router, A : Any>(override var router: R) : Screen<R, A> {
-
-  override var state = ScreenState.NONE
-  override var args: A? = null
+abstract class JsScreen<R : Router>(override var router: R) : Screen<R> {
 
   abstract var root: Element
 
@@ -79,7 +66,11 @@ abstract class JsScreen<R : Router, A : Any>(override var router: R) : Screen<R,
   }
 
   override fun onBack(): Boolean {
-    return router.back()
+    val router = this.router
+    if (router is ScreenRouter) {
+      return router.back()
+    }
+    return false
   }
 
   override fun pause() {
