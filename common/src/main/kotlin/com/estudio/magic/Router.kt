@@ -1,4 +1,4 @@
-package com.estudio.magic.com.estudio.magic
+package com.estudio.magic
 
 open class Command<T>(val mark: String, val data: T) {
   override fun toString() = mark

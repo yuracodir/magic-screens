@@ -1,4 +1,4 @@
-package com.yuracodir.android_sample
+package com.yuracodir.sample
 
 import android.content.Context
 import android.graphics.Color
@@ -8,11 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.estudio.magic.android.AndroidScreen
-import com.yuracodir.android_sample.ActivityRouter.Companion.SCREEN_COLOR
-import com.yuracodir.android_sample.ActivityRouter.Companion.SCREEN_FORWARD
-import com.yuracodir.android_sample.ActivityRouter.Companion.SCREEN_PAGER
-import com.yuracodir.android_sample.ActivityRouter.Companion.SCREEN_REPLACE
-import com.yuracodir.android_sample.ActivityRouter.Companion.SCREEN_ROOT
+import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_COLOR
+import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_FORWARD
+import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_PAGER
+import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_REPLACE
+import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_ROOT
 import kotlinx.android.synthetic.main.item_menu.view.*
 import kotlinx.android.synthetic.main.screen_main.view.*
 

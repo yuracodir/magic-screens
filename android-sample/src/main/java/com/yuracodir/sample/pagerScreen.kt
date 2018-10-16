@@ -1,16 +1,16 @@
-package com.yuracodir.android_sample
+package com.yuracodir.sample
 
 import android.content.Context
 import android.graphics.Color
 import android.view.View
+import com.estudio.magic.Screen
 import com.estudio.magic.android.AndroidScreen
-import com.estudio.magic.com.estudio.magic.Screen
-import com.yuracodir.android_sample.SamplePagerRouter.Companion.SCREEN_RECYCLER
-import com.yuracodir.android_sample.SamplePagerRouter.Companion.SCREEN_SAMPLE_1
-import com.yuracodir.android_sample.SamplePagerRouter.Companion.SCREEN_SAMPLE_2
-import com.yuracodir.android_sample.SamplePagerRouter.Companion.SCREEN_SAMPLE_3
-import com.yuracodir.android_sample.screens.PagerRouter
-import com.yuracodir.android_sample.screens.PagerScreen
+import com.yuracodir.sample.SamplePagerRouter.Companion.SCREEN_RECYCLER
+import com.yuracodir.sample.SamplePagerRouter.Companion.SCREEN_SAMPLE_1
+import com.yuracodir.sample.SamplePagerRouter.Companion.SCREEN_SAMPLE_2
+import com.yuracodir.sample.SamplePagerRouter.Companion.SCREEN_SAMPLE_3
+import com.yuracodir.sample.screens.PagerRouter
+import com.yuracodir.sample.screens.PagerScreen
 import kotlinx.android.synthetic.main.screen_pager.view.*
 
 class SamplePagerScreen(context: Context, router: ActivityRouter, val touchDelegate: Boolean = true) :

@@ -1,4 +1,4 @@
-package com.estudio.magic.com.estudio.magic
+package com.estudio.magic
 
 
 interface ContainerScreen {
@@ -97,19 +97,19 @@ abstract class ScreenRouter(containerScreen: ContainerScreen) : Router() {
   val currentScreen
     get() = navigator.lastScreen
 
-  fun root(mark: String, args: Any? = null) {
+  open fun root(mark: String, args: Any? = null) {
     instantiate(mark, args)?.let {
       super.root(Forward(mark, it))
     }
   }
 
-  fun replace(mark: String, args: Any? = null) {
+  open fun replace(mark: String, args: Any? = null) {
     instantiate(mark, args)?.let {
       super.replace(Forward(mark, it))
     }
   }
 
-  fun forward(mark: String, args: Any? = null) {
+  open fun forward(mark: String, args: Any? = null) {
     instantiate(mark, args)?.let {
       super.forward(Forward(mark, it))
     }

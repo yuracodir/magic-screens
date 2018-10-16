@@ -5,10 +5,10 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import com.estudio.magic.com.estudio.magic.ContainerScreen
-import com.estudio.magic.com.estudio.magic.Router
-import com.estudio.magic.com.estudio.magic.Screen
-import com.estudio.magic.com.estudio.magic.ScreenRouter
+import com.estudio.magic.ContainerScreen
+import com.estudio.magic.Router
+import com.estudio.magic.Screen
+import com.estudio.magic.ScreenRouter
 
 abstract class AndroidContainerScreen<Ro : Router>(context: Context, router: Ro) :
   AndroidScreen<Ro>(context, router),

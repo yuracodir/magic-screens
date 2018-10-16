@@ -1,17 +1,17 @@
-package com.yuracodir.android_sample
+package com.yuracodir.sample
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
+import com.estudio.magic.ContainerScreen
+import com.estudio.magic.Screen
+import com.estudio.magic.ScreenRouter
 import com.estudio.magic.android.AndroidScreen
-import com.estudio.magic.com.estudio.magic.ContainerScreen
-import com.estudio.magic.com.estudio.magic.Screen
-import com.estudio.magic.com.estudio.magic.ScreenRouter
-import com.yuracodir.android_sample.ActivityRouter.Companion.SCREEN_COLOR
-import com.yuracodir.android_sample.ActivityRouter.Companion.SCREEN_FORWARD
-import com.yuracodir.android_sample.ActivityRouter.Companion.SCREEN_PAGER
-import com.yuracodir.android_sample.ActivityRouter.Companion.SCREEN_REPLACE
-import com.yuracodir.android_sample.ActivityRouter.Companion.SCREEN_ROOT
+import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_COLOR
+import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_FORWARD
+import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_PAGER
+import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_REPLACE
+import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_ROOT
 
 class MainActivity : AppCompatActivity(), ContainerScreen {
 

@@ -1,11 +1,11 @@
-package com.yuracodir.android_sample
+package com.yuracodir.sample
 
 import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.widget.SeekBar
+import com.estudio.magic.ScreenRouter
 import com.estudio.magic.android.AndroidScreen
-import com.estudio.magic.com.estudio.magic.ScreenRouter
 import kotlinx.android.synthetic.main.screen_color.view.*
 
 class ColorScreen(
