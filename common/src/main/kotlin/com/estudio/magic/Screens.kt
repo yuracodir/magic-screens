@@ -93,7 +93,7 @@ open class ScreenNavigator(private val containerScreen: ContainerScreen) {
 }
 
 abstract class ScreenRouter(containerScreen: ContainerScreen) : Router() {
-  val navigator = ScreenNavigator(containerScreen)
+  open val navigator = ScreenNavigator(containerScreen)
   val currentScreen
     get() = navigator.lastScreen
 
