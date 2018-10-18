@@ -135,7 +135,6 @@ class Stack<T> {
   }
 
   fun clear() {
-    //    checkNotNull()
     last = null
     size = 0
   }

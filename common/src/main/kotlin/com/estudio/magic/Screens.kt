@@ -31,27 +31,35 @@ open class ScreenNavigator(private val containerScreen: ContainerScreen) {
   open fun forwardScreen(screen: Screen<*>) {
     lastScreen?.let {
       pause(it)
-      containerScreen.detach(it)
+      detach(it)
     }
     lastScreen = screen
     create(screen)
-    containerScreen.attach(screen)
+    attach(screen)
     resume(screen)
   }
 
   open fun backScreen(screen: Screen<*>) {
     lastScreen?.let {
       pause(it)
-      containerScreen.detach(it)
+      detach(it)
       destroy(it)
     }
     lastScreen = screen
     create(screen)
-    containerScreen.attach(screen)
+    attach(screen)
     resume(screen)
   }
 
-  fun create(screen: Screen<*>? = lastScreen) {
+  open fun detach(screen: Screen<*>) {
+    containerScreen.detach(screen)
+  }
+
+  open fun attach(screen: Screen<*>) {
+    containerScreen.attach(screen)
+  }
+
+  open fun create(screen: Screen<*>? = lastScreen) {
     screen?.let {
       val state = screenStates[it]
       if (state == null) {
@@ -61,7 +69,7 @@ open class ScreenNavigator(private val containerScreen: ContainerScreen) {
     }
   }
 
-  fun resume(screen: Screen<*>? = lastScreen) {
+  open fun resume(screen: Screen<*>? = lastScreen) {
     screen?.let {
       val state = screenStates[it]
       if (state == ScreenState.CREATED || state == ScreenState.PAUSED) {
@@ -71,7 +79,7 @@ open class ScreenNavigator(private val containerScreen: ContainerScreen) {
     }
   }
 
-  fun pause(screen: Screen<*>? = lastScreen) {
+  open fun pause(screen: Screen<*>? = lastScreen) {
     screen?.let {
       val state = screenStates[it]
       if (state == ScreenState.RESUMED) {
@@ -81,7 +89,7 @@ open class ScreenNavigator(private val containerScreen: ContainerScreen) {
     }
   }
 
-  fun destroy(screen: Screen<*>? = lastScreen) {
+  open fun destroy(screen: Screen<*>? = lastScreen) {
     screen?.let {
       val state = screenStates[it]
       if (state == ScreenState.PAUSED || state == ScreenState.CREATED) {
@@ -151,5 +159,5 @@ abstract class ScreenRouter(containerScreen: ContainerScreen) : Router() {
   abstract fun instantiate(mark: String, args: Any? = null): Screen<*>?
 }
 
-class Forward(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)
-class Back(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)
+open class Forward(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)
+open class Back(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)
