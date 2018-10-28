@@ -5,7 +5,8 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:orientation="vertical"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:background="@color/background">
 
   <android.support.v7.widget.Toolbar
     android:id="@+id/toolbar"
@@ -13,7 +14,7 @@
     android:layout_height="wrap_content"
     app:title="@string/color_title"
     app:navigationIcon="@drawable/ic_arrow_back"
-    android:background="@color/colorPrimary"/>
+    android:background="@color/colorPrimary" />
 
   <RelativeLayout
     android:layout_width="match_parent"
@@ -24,34 +25,30 @@
       android:id="@+id/color"
       android:layout_width="64dp"
       android:layout_height="64dp"
-      android:layout_alignParentEnd="true"
-      android:layout_alignParentRight="true"/>
+      android:layout_alignParentEnd="true" />
 
     <SeekBar
       android:id="@+id/red"
       android:layout_alignTop="@id/color"
-      android:layout_toLeftOf="@id/color"
       android:layout_toStartOf="@id/color"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:max="255"
       tools:progres="75"
-      style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
+      style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal" />
 
     <SeekBar
       android:layout_below="@id/red"
       android:id="@+id/green"
-      android:layout_toLeftOf="@id/color"
       android:layout_toStartOf="@id/color"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:max="255"
       tools:progres="50"
-      style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
+      style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal" />
 
     <SeekBar
       android:layout_below="@id/green"
-      android:layout_toLeftOf="@id/color"
       android:layout_toStartOf="@id/color"
       android:id="@+id/blue"
       android:layout_width="match_parent"
@@ -59,7 +56,7 @@
       android:max="255"
       tools:progres="25"
       style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
-    />
+      />
   </RelativeLayout>
 
 </LinearLayout>

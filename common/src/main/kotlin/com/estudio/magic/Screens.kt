@@ -39,7 +39,7 @@ open class ScreenNavigator(private val containerScreen: ContainerScreen) {
     resume(screen)
   }
 
-  open fun backScreen(screen: Screen<*>) {
+  open fun replaceScreen(screen: Screen<*>) {
     lastScreen?.let {
       pause(it)
       detach(it)
@@ -49,6 +49,13 @@ open class ScreenNavigator(private val containerScreen: ContainerScreen) {
     create(screen)
     attach(screen)
     resume(screen)
+  }
+
+  open fun destroyScreen(screen: Screen<*>) {
+    screen.let {
+      pause(it)
+      destroy(it)
+    }
   }
 
   open fun detach(screen: Screen<*>) {
@@ -100,20 +107,22 @@ open class ScreenNavigator(private val containerScreen: ContainerScreen) {
   }
 }
 
-abstract class ScreenRouter(containerScreen: ContainerScreen) : Router() {
-  open val navigator = ScreenNavigator(containerScreen)
+abstract class ScreenRouter(
+  containerScreen: ContainerScreen,
+  open val navigator: ScreenNavigator = ScreenNavigator(containerScreen)
+) : Router() {
   val currentScreen
     get() = navigator.lastScreen
 
   open fun root(mark: String, args: Any? = null) {
     instantiate(mark, args)?.let {
-      super.root(Forward(mark, it))
+      super.root(Replace(mark, it))
     }
   }
 
   open fun replace(mark: String, args: Any? = null) {
     instantiate(mark, args)?.let {
-      super.replace(Forward(mark, it))
+      super.replace(Replace(mark, it))
     }
   }
 
@@ -124,35 +133,30 @@ abstract class ScreenRouter(containerScreen: ContainerScreen) : Router() {
   }
 
   open fun back(mark: String? = null): Boolean {
-    var command: Command<*>? = null
-
     if (history.size > 1) {
       if (mark == null) {
-        command = history[history.size - 2]
+        val command = history[history.size - 2]
+        super.back(Replace(command.mark, command.data as Screen<*>))
+        return true
       } else {
         while (history.size > 1) {
-          val age = history[history.size - 2]
-          command = age
-          if (age.mark == mark) {
-            break
+          val command = history[history.size - 2]
+          if (command.mark == mark || history.size == 2) {
+            super.back(Replace(command.mark, command.data as Screen<*>))
+            return true
           }
-          if (history.size > 2) {
-            history.pop()
-          } else {
-            break
-          }
+          super.back(Destroy(command.mark, command.data as Screen<*>))
         }
       }
     }
-    return command?.let {
-      back(Back(it.mark, it.data as Screen<*>))
-    } == true
+    return false
   }
 
   override fun navigateTo(command: Command<*>) {
     when (command) {
       is Forward -> navigator.forwardScreen(command.data)
-      is Back -> navigator.backScreen(command.data)
+      is Replace -> navigator.replaceScreen(command.data)
+      is Destroy -> navigator.destroyScreen(command.data)
     }
   }
 
@@ -160,4 +164,5 @@ abstract class ScreenRouter(containerScreen: ContainerScreen) : Router() {
 }
 
 open class Forward(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)
-open class Back(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)
+open class Replace(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)
+open class Destroy(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)

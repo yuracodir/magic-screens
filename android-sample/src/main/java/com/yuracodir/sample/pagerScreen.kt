@@ -58,7 +58,7 @@ class SamplePagerRouter(private val pagerScreen: SamplePagerScreen) : PagerRoute
   }
 
   fun startColorScreen(color: Int, result: (Int) -> Unit) {
-    pagerScreen.router.startColorScreen(color, result)
+    pagerScreen.router.startColorScreen()
   }
 
   fun showFirstScreen() {

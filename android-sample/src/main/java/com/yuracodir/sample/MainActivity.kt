@@ -2,9 +2,16 @@ package com.yuracodir.sample
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.transition.Slide
+import android.transition.Transition
+import android.transition.TransitionManager
+import android.transition.TransitionSet
+import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
 import com.estudio.magic.ContainerScreen
 import com.estudio.magic.Screen
+import com.estudio.magic.ScreenNavigator
 import com.estudio.magic.ScreenRouter
 import com.estudio.magic.android.AndroidScreen
 import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_COLOR
@@ -13,17 +20,19 @@ import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_PAGER
 import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_REPLACE
 import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_ROOT
 
+
 class MainActivity : AppCompatActivity(), ContainerScreen {
 
   override fun attach(screen: Screen<*>) {
     if (screen is AndroidScreen) {
       containerView.addView(screen.root)
+      screen.root.visibility = View.VISIBLE
     }
   }
 
   override fun detach(screen: Screen<*>) {
     if (screen is AndroidScreen) {
-      containerView.removeView(screen.root)
+      screen.root.visibility = View.GONE
     }
   }
 
@@ -69,10 +78,79 @@ class MainActivity : AppCompatActivity(), ContainerScreen {
 
     childRouter.startMainScreen()
   }
+
+  fun animateForward(prev: Screen<*>?, next: Screen<*>) {
+    TransitionManager.endTransitions(containerView)
+    TransitionManager.beginDelayedTransition(
+      containerView,
+      TransitionSet().apply {
+        addTransition(
+          Slide(Gravity.END)
+            .addTarget((next as AndroidScreen<*>).root)
+        )
+        prev?.let {
+          addTransition(
+            Slide(Gravity.START)
+              .addTarget((prev as AndroidScreen<*>).root)
+              .addListener(RemoveViewOnEndTransitionListener(prev.root))
+          )
+        }
+      })
+  }
+
+  fun animateBackward(prev: Screen<*>?, next: Screen<*>) {
+    TransitionManager.endTransitions(containerView)
+    TransitionManager.beginDelayedTransition(
+      containerView,
+      TransitionSet().apply {
+        addTransition(
+          Slide(Gravity.START)
+            .addTarget((next as AndroidScreen<*>).root)
+        )
+        prev?.let {
+          addTransition(
+            Slide(Gravity.END)
+              .addTarget((prev as AndroidScreen<*>).root)
+              .addListener(RemoveViewOnEndTransitionListener(prev.root))
+          )
+        }
+      })
+  }
 }
 
-class ActivityRouter(val container: MainActivity) : ScreenRouter(container) {
-  fun startColorScreen(color: Int, result: (Int) -> Unit) {
+class RemoveViewOnEndTransitionListener(val view: View) : Transition.TransitionListener {
+  override fun onTransitionResume(transition: Transition?) {
+  }
+
+  override fun onTransitionPause(transition: Transition?) {
+  }
+
+  override fun onTransitionCancel(transition: Transition?) {
+  }
+
+  override fun onTransitionStart(transition: Transition?) {
+  }
+
+  override fun onTransitionEnd(transition: Transition) {
+    (view.parent as ViewGroup).removeView(view)
+    transition.removeListener(this)
+  }
+}
+
+class AnimatedScreenNavigator(val container: MainActivity) : ScreenNavigator(container) {
+  override fun forwardScreen(screen: Screen<*>) {
+    container.animateForward(lastScreen, screen)
+    super.forwardScreen(screen)
+  }
+
+  override fun replaceScreen(screen: Screen<*>) {
+    container.animateBackward(lastScreen, screen)
+    super.replaceScreen(screen)
+  }
+}
+
+class ActivityRouter(val container: MainActivity) : ScreenRouter(container, AnimatedScreenNavigator(container)) {
+  fun startColorScreen() {
     forward(SCREEN_COLOR)
   }
 
