@@ -11,7 +11,9 @@ dependencies {
   expectedBy project(":common")
 }
 
-[compileKotlin2Js, compileTestKotlin2Js]*.configure {
-  kotlinOptions.moduleKind = "commonjs"
+compileKotlin2Js {
+  kotlinOptions.metaInfo = true
   kotlinOptions.sourceMap = true
+  kotlinOptions.moduleKind = 'commonjs'
+  kotlinOptions.main = "call"
 }
