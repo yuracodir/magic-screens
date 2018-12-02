@@ -11,6 +11,10 @@ dependencies {
   expectedBy project(":common")
 }
 
+sourceSets {
+  main.kotlin.srcDirs += "src/main/kotlin"
+}
+
 compileKotlin2Js { 
   kotlinOptions.moduleKind = 'amd'
 }
