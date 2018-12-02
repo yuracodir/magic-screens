@@ -12,10 +12,10 @@ import org.w3c.dom.get
 abstract class JsContainerScreen<R : Router>(override var router: R) :
   JsScreen<R>(router), ContainerScreen {
 
-  lateinit var container: HTMLElement
+  protected lateinit var container: HTMLElement
 
   override fun bind(view: Element) {
-    container = view.getElementsByClassName("container")[0] as HTMLElement
+    container = view.getElementsByTagName("container")[0] as HTMLElement
   }
 
   override fun pause() {

@@ -11,9 +11,6 @@ dependencies {
   expectedBy project(":common")
 }
 
-compileKotlin2Js {
-  kotlinOptions.metaInfo = true
-  kotlinOptions.sourceMap = true
-  kotlinOptions.moduleKind = 'commonjs'
-  kotlinOptions.main = "call"
+compileKotlin2Js { 
+  kotlinOptions.moduleKind = 'amd'
 }
