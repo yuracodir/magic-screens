@@ -7,7 +7,6 @@ open class Command<T>(val mark: String, val data: T) {
 abstract class Router {
   internal val history: Stack<Command<*>> = Stack()
 
-
   open fun forward(command: Command<*>?) {
     command?.let {
       history.push(command)
@@ -44,6 +43,7 @@ abstract class Router {
 
   override fun toString() = history.toString()
   fun isEmpty() = history.size == 0
+  fun size() = history.size
 
   protected abstract fun navigateTo(command: Command<*>)
 }
