@@ -1,4 +1,4 @@
-package com.yuracodir.sample
+package com.yuracodir.sample.screens
 
 import android.content.Context
 import android.graphics.Color
@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.SeekBar
 import com.estudio.magic.ScreenRouter
 import com.estudio.magic.android.AndroidScreen
+import com.yuracodir.sample.R
+import com.yuracodir.sample.inflate
 import kotlinx.android.synthetic.main.screen_color.view.*
 
 class ColorScreen(
@@ -20,7 +22,7 @@ class ColorScreen(
     onBack()
   }
 
-  override val layoutId = R.layout.screen_color
+  override val root = inflate(context, R.layout.screen_color)
   private val color = IntArray(3)
 
   override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {

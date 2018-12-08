@@ -56,20 +56,7 @@ abstract class AndroidContainerScreen<Ro : Router>(context: Context, router: Ro)
 abstract class AndroidScreen<R : Router>
   (protected val context: Context, override var router: R) : Screen<R> {
 
-  private var view: View? = null
-  val root: View
-    get() {
-      val v = view
-      return if (v == null) {
-        val inflated = View.inflate(context, layoutId, null)
-        view = inflated
-        inflated
-      } else {
-        v
-      }
-    }
-
-  abstract val layoutId: Int
+  abstract val root: View
 
   abstract fun bind(view: View)
 

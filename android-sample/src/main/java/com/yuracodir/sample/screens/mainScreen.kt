@@ -1,4 +1,4 @@
-package com.yuracodir.sample
+package com.yuracodir.sample.screens
 
 import android.content.Context
 import android.graphics.Color
@@ -8,11 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.estudio.magic.android.AndroidScreen
+import com.yuracodir.sample.ActivityRouter
 import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_COLOR
 import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_FORWARD
 import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_PAGER
 import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_REPLACE
 import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_ROOT
+import com.yuracodir.sample.R
+import com.yuracodir.sample.inflate
 import kotlinx.android.synthetic.main.item_menu.view.*
 import kotlinx.android.synthetic.main.screen_main.view.*
 
@@ -35,7 +38,7 @@ class MainScreen(context: Context, router: ActivityRouter) :
       field = value
       root.color.setBackgroundColor(value)
     }
-  override val layoutId = R.layout.screen_main
+  override val root = inflate(context, R.layout.screen_main)
   private val adapter = MenuAdapter(this)
 
   override fun bind(view: View) {

@@ -1,5 +1,6 @@
 package com.yuracodir.sample
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.transition.Slide
@@ -19,6 +20,10 @@ import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_FORWARD
 import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_PAGER
 import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_REPLACE
 import com.yuracodir.sample.ActivityRouter.Companion.SCREEN_ROOT
+import com.yuracodir.sample.screens.ColorArguments
+import com.yuracodir.sample.screens.ColorScreen
+import com.yuracodir.sample.screens.MainScreen
+import com.yuracodir.sample.screens.SamplePagerScreen
 
 
 class MainActivity : AppCompatActivity(), ContainerScreen {
@@ -170,3 +175,5 @@ class ActivityRouter(val container: MainActivity) : ScreenRouter(container, Anim
     const val SCREEN_PAGER = "pager"
   }
 }
+
+fun inflate(context: Context, res: Int): View = View.inflate(context, res, null)

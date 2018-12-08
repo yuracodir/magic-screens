@@ -1,16 +1,17 @@
-package com.yuracodir.sample
+package com.yuracodir.sample.screens
 
 import android.content.Context
 import android.graphics.Color
 import android.view.View
 import com.estudio.magic.Screen
 import com.estudio.magic.android.AndroidScreen
-import com.yuracodir.sample.SamplePagerRouter.Companion.SCREEN_RECYCLER
-import com.yuracodir.sample.SamplePagerRouter.Companion.SCREEN_SAMPLE_1
-import com.yuracodir.sample.SamplePagerRouter.Companion.SCREEN_SAMPLE_2
-import com.yuracodir.sample.SamplePagerRouter.Companion.SCREEN_SAMPLE_3
-import com.yuracodir.sample.screens.PagerRouter
-import com.yuracodir.sample.screens.PagerScreen
+import com.yuracodir.sample.ActivityRouter
+import com.yuracodir.sample.R
+import com.yuracodir.sample.inflate
+import com.yuracodir.sample.screens.SamplePagerRouter.Companion.SCREEN_RECYCLER
+import com.yuracodir.sample.screens.SamplePagerRouter.Companion.SCREEN_SAMPLE_1
+import com.yuracodir.sample.screens.SamplePagerRouter.Companion.SCREEN_SAMPLE_2
+import com.yuracodir.sample.screens.SamplePagerRouter.Companion.SCREEN_SAMPLE_3
 import kotlinx.android.synthetic.main.screen_pager.view.*
 
 class SamplePagerScreen(context: Context, router: ActivityRouter, val touchDelegate: Boolean = true) :
@@ -22,7 +23,7 @@ class SamplePagerScreen(context: Context, router: ActivityRouter, val touchDeleg
     if (touchDelegate) SCREEN_RECYCLER else SCREEN_SAMPLE_2,
     SCREEN_SAMPLE_3
   )
-  override val layoutId = R.layout.screen_pager
+  override val root = inflate(context, R.layout.screen_pager)
   override fun instantiate(mark: String, args: Any?): Screen<*>? {
     return when (mark) {
       SCREEN_SAMPLE_1 -> SampleScreen(context, childRouter)
@@ -69,7 +70,7 @@ class SamplePagerRouter(private val pagerScreen: SamplePagerScreen) : PagerRoute
 class SampleScreen(context: Context, router: SamplePagerRouter) :
   AndroidScreen<SamplePagerRouter>(context, router), View.OnClickListener {
 
-  override val layoutId = R.layout.screen_sample
+  override val root = inflate(context, R.layout.screen_sample)
   var color: Int = 0
     set(value) {
       field = value

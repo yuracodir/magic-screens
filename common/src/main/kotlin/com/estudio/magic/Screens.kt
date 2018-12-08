@@ -39,6 +39,18 @@ open class ScreenNavigator(private val containerScreen: ContainerScreen) {
     resume(screen)
   }
 
+  open fun backwardScreen(screen: Screen<*>) {
+    lastScreen?.let {
+      pause(it)
+      detach(it)
+      destroy(it)
+    }
+    lastScreen = screen
+    create(screen)
+    attach(screen)
+    resume(screen)
+  }
+
   open fun replaceScreen(screen: Screen<*>) {
     lastScreen?.let {
       pause(it)
@@ -136,13 +148,13 @@ abstract class ScreenRouter(
     if (history.size > 1) {
       if (mark == null) {
         val command = history[history.size - 2]
-        super.back(Replace(command.mark, command.data as Screen<*>))
+        super.back(Backward(command.mark, command.data as Screen<*>))
         return true
       } else {
         while (history.size > 1) {
           val command = history[history.size - 2]
           if (command.mark == mark || history.size == 2) {
-            super.back(Replace(command.mark, command.data as Screen<*>))
+            super.back(Backward(command.mark, command.data as Screen<*>))
             return true
           }
           super.back(Destroy(command.mark, command.data as Screen<*>))
@@ -155,6 +167,7 @@ abstract class ScreenRouter(
   override fun navigateTo(command: Command<*>) {
     when (command) {
       is Forward -> navigator.forwardScreen(command.data)
+      is Backward -> navigator.backwardScreen(command.data)
       is Replace -> navigator.replaceScreen(command.data)
       is Destroy -> navigator.destroyScreen(command.data)
     }
@@ -164,5 +177,6 @@ abstract class ScreenRouter(
 }
 
 open class Forward(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)
+open class Backward(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)
 open class Replace(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)
 open class Destroy(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)
