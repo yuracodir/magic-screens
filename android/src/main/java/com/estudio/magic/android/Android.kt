@@ -16,8 +16,9 @@ abstract class AndroidContainerScreen<Ro : Router>(context: Context, router: Ro)
 
   protected lateinit var container: ViewGroup
 
-  override fun bind(view: View) {
-    container = view.findViewById(R.id.container)
+  override fun create() {
+    super.create()
+    container = root.findViewById(R.id.container)
   }
 
   override fun pause() {
@@ -53,15 +54,13 @@ abstract class AndroidContainerScreen<Ro : Router>(context: Context, router: Ro)
   }
 }
 
-abstract class AndroidScreen<R : Router>
-  (protected val context: Context, override var router: R) : Screen<R> {
+abstract class AndroidScreen<R : Router>(
+  protected val context: Context,
+  override var router: R) : Screen<R> {
 
   abstract val root: View
 
-  abstract fun bind(view: View)
-
   override fun create() {
-    bind(root)
   }
 
   override fun pause() {
