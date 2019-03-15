@@ -8,14 +8,13 @@ import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.get
 
-
 abstract class JsContainerScreen<R : Router>(override var router: R) :
-  JsScreen<R>(router), ContainerScreen {
-
+    JsScreen<R>(router), ContainerScreen {
   protected lateinit var container: HTMLElement
 
-  override fun bind(view: Element) {
-    container = view.getElementsByTagName("container")[0] as HTMLElement
+  override fun create() {
+    super.create()
+    container = root.getElementsByTagName("container")[0] as HTMLElement
   }
 
   override fun pause() {
@@ -52,19 +51,9 @@ abstract class JsContainerScreen<R : Router>(override var router: R) :
 }
 
 abstract class JsScreen<R : Router>(override var router: R) : Screen<R> {
-
   abstract var root: Element
-
-  abstract fun bind(view: Element)
-
-  override fun create() {
-    bind(root)
-  }
-
-  override fun destroy() {
-
-  }
-
+  override fun create() {}
+  override fun destroy() {}
   override fun onBack(): Boolean {
     val router = this.router
     if (router is ScreenRouter) {
@@ -73,12 +62,6 @@ abstract class JsScreen<R : Router>(override var router: R) : Screen<R> {
     return false
   }
 
-  override fun pause() {
-
-  }
-
-  override fun resume() {
-
-  }
-
+  override fun pause() {}
+  override fun resume() {}
 }
