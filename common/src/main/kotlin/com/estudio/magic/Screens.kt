@@ -1,6 +1,5 @@
 package com.estudio.magic
 
-
 interface ContainerScreen {
   val childRouter: ScreenRouter
   fun attach(screen: Screen<*>)
@@ -18,7 +17,6 @@ interface Screen<R : Router> {
 }
 
 open class ScreenNavigator(private val containerScreen: ContainerScreen) {
-
   private enum class ScreenState {
     CREATED,
     RESUMED,
@@ -125,6 +123,16 @@ abstract class ScreenRouter(
 ) : Router() {
   val currentScreen
     get() = navigator.lastScreen
+
+  open fun chain(vararg screens: Pair<String, Any?>) {
+    screens.mapNotNull { pair ->
+      instantiate(pair.first, pair.second)?.let { screen ->
+        Replace(pair.first, screen)
+      }
+    }.toTypedArray().let {
+      super.chain(*it)
+    }
+  }
 
   open fun root(mark: String, args: Any? = null) {
     instantiate(mark, args)?.let {

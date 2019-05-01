@@ -5,7 +5,17 @@ open class Command<T>(val mark: String, val data: T) {
 }
 
 abstract class Router {
-  internal val history: Stack<Command<*>> = Stack()
+  protected val history: Stack<Command<*>> = Stack()
+
+  open fun chain(vararg commands: Command<*>) {
+    if (commands.isNotEmpty()) {
+      history.clear()
+      commands.forEach {
+        history.push(it)
+      }
+      navigateTo(commands.last())
+    }
+  }
 
   open fun forward(command: Command<*>?) {
     command?.let {
@@ -49,7 +59,6 @@ abstract class Router {
 }
 
 class Stack<T> {
-
   var size: Int = 0
   private var last: Node<T>? = null
 
