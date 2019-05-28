@@ -8,12 +8,12 @@ interface ContainerScreen {
 
 interface Screen<R : Router> {
   var router: R
-
   fun create()
   fun pause()
   fun resume()
   fun destroy()
   fun onBack(): Boolean // is Handled ?
+  fun getName(): String = ""
 }
 
 open class ScreenNavigator(private val containerScreen: ContainerScreen) {
@@ -124,32 +124,24 @@ abstract class ScreenRouter(
   val currentScreen
     get() = navigator.lastScreen
 
-  open fun chain(vararg screens: Pair<String, Any?>) {
-    screens.mapNotNull { pair ->
-      instantiate(pair.first, pair.second)?.let { screen ->
-        Replace(pair.first, screen)
-      }
+  open fun chain(vararg screens: Screen<*>) {
+    screens.map { screen ->
+      Replace(screen.getName(), screen)
     }.toTypedArray().let {
       super.chain(*it)
     }
   }
 
-  open fun root(mark: String, args: Any? = null) {
-    instantiate(mark, args)?.let {
-      super.root(Replace(mark, it))
-    }
+  open fun root(screen: Screen<*>) {
+    super.root(Replace(screen.getName(), screen))
   }
 
-  open fun replace(mark: String, args: Any? = null) {
-    instantiate(mark, args)?.let {
-      super.replace(Replace(mark, it))
-    }
+  open fun replace(screen: Screen<*>) {
+    super.replace(Replace(screen.getName(), screen))
   }
 
-  open fun forward(mark: String, args: Any? = null) {
-    instantiate(mark, args)?.let {
-      super.forward(Forward(mark, it))
-    }
+  open fun forward(screen: Screen<*>) {
+    super.forward(Forward(screen.getName(), screen))
   }
 
   open fun back(mark: String? = null): Boolean {
@@ -180,8 +172,6 @@ abstract class ScreenRouter(
       is Destroy -> navigator.destroyScreen(command.data)
     }
   }
-
-  abstract fun instantiate(mark: String, args: Any? = null): Screen<*>?
 }
 
 open class Forward(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)

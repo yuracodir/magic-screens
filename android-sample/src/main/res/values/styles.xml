@@ -9,8 +9,8 @@
   </style>
 
   <style name="Toolbar" parent="Base.Widget.AppCompat.Light.ActionBar">
-    <item name="android:background">@color/background</item>
-    <item name="android:elevation">4dp</item>
+    <item name="background">@color/background</item>
+    <item name="elevation">4dp</item>
   </style>
 
   <style name="Title" parent="Text">

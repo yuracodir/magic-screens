@@ -16,9 +16,6 @@ import kotlinx.android.synthetic.main.screen_main.view.*
 
 class VacanciesScreen(context: Context, router: ActivityRouter) :
     AndroidScreen<ActivityRouter>(context, router), SearchView.OnQueryTextListener, PaginationListener {
-  companion object {
-    const val Name = "Main screen"
-  }
 
   override val root = inflate(context, R.layout.screen_main)
   private val presenter = VacanciesPresenter(this, router)

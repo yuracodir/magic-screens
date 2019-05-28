@@ -1,6 +1,8 @@
 package com.yuracodir.sample.ui
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.support.v4.text.HtmlCompat
 import android.view.View
 import android.widget.Toast
@@ -14,9 +16,6 @@ import kotlinx.android.synthetic.main.screen_details.view.*
 
 class DetailsScreen(context: Context, router: ActivityRouter, args: VacancyPreviewDto) :
     AndroidScreen<ActivityRouter>(context, router) {
-  companion object {
-    const val Name = "details"
-  }
 
   override val root = inflate(context, R.layout.screen_details)
   private val presenter = DetailsPresenter(this, router, args)
@@ -68,6 +67,15 @@ class DetailsScreen(context: Context, router: ActivityRouter, args: VacancyPrevi
   fun hideButtonLink() {
     root.link_layout.visibility = View.GONE
   }
+
+  fun openLink(title: String, url: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    try {
+      context.startActivity(Intent.createChooser(intent, title))
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+  }
 }
 
 class DetailsPresenter(
@@ -106,7 +114,7 @@ class DetailsPresenter(
 
   fun onLinkClick() {
     vacancy?.let {
-      router.openLink(it.name, it.url)
+      view.openLink(it.name, it.url)
     }
   }
 }
