@@ -117,7 +117,7 @@ open class ScreenNavigator(private val containerScreen: ContainerScreen) {
   }
 }
 
-abstract class ScreenRouter(
+open class ScreenRouter(
   containerScreen: ContainerScreen,
   open val navigator: ScreenNavigator = ScreenNavigator(containerScreen)
 ) : Router() {
