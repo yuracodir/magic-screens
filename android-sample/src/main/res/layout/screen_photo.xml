@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_height="match_parent"
+  android:layout_width="match_parent"
+  android:background="@color/background"
+  android:orientation="vertical">
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/list"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+  <FrameLayout
+    android:id="@+id/empty"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+      android:gravity="center"
+      android:drawablePadding="16dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:drawableTop="@drawable/ic_image_broken"
+      android:text="@string/list_empty_title" />
+  </FrameLayout>
+
+  <androidx.appcompat.widget.Toolbar
+    style="@style/Toolbar"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:actionBarSize"
+    android:background="@color/blackTransparent10"
+    android:title="@string/main_title" />
+
+</FrameLayout>

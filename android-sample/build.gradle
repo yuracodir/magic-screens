@@ -1,8 +1,8 @@
 buildscript {
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.android.tools.build:gradle:3.2.1'
-    }
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath 'com.android.tools.build:gradle:3.2.1'
+  }
 }
 
 ext.koin_version = '1.0.2'
@@ -15,40 +15,54 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 28
+  compileSdkVersion 28
 
-    defaultConfig {
-        applicationId "com.yuracodir.sample"
-        minSdkVersion 23
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
-    }
+  defaultConfig {
+    applicationId "com.yuracodir.magic.sample"
+    minSdkVersion 23
+    targetSdkVersion 28
+    versionCode 1
+    versionName "1.0"
+  }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
+  }
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+}
+repositories {
+  maven { url "https://jitpack.io" }
+}
 dependencies {
-    implementation project(":android")
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    //kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
-    //support
-    implementation "com.android.support:appcompat-v7:$compat_version"
-    implementation "com.android.support:recyclerview-v7:$compat_version"
-    implementation "com.android.support:cardview-v7:$compat_version"
-    //di
-    implementation "org.koin:koin-android:$koin_version"
-    //network
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
-    //images
-    implementation 'com.squareup.picasso:picasso:2.71828'
+  implementation project(":android")
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  //kotlin
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+  //androidx
+  implementation "androidx.appcompat:appcompat:1.0.2"
+  implementation "androidx.recyclerview:recyclerview:1.0.0"
+  implementation "androidx.cardview:cardview:1.0.0"
+  //di
+  implementation "org.koin:koin-android:$koin_version"
+  //network
+  implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+  implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+  implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+  //images 
+  implementation "io.coil-kt:coil:0.6.1"
+  implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 }

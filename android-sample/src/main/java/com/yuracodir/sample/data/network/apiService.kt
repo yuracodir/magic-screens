@@ -1,35 +1,31 @@
 package com.yuracodir.sample.data.network
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.yuracodir.sample.data.models.VacanciesResponse
-import com.yuracodir.sample.data.models.VacancyDetailsDto
+import com.yuracodir.sample.data.models.AlbumDto
+import com.yuracodir.sample.data.models.PhotoDto
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface HeadHunterApi {
-  @GET("/vacancies")
-  fun getVacancies(
-    @Query("text") text: String,
-    @Query("page") page: Int,
-    @Query("per_page") perPage: Int): Deferred<Response<VacanciesResponse>>
+interface TypicodeApi {
+  @GET("albums")
+  fun getAlbums(): Deferred<Response<List<AlbumDto>>>
 
-  @GET("/vacancies/{id}")
-  fun getVacancyDetails(@Path("id") id: Long): Deferred<Response<VacancyDetailsDto>>
+  @GET("photos")
+  fun getPhotos(@Query("albumId") albumId: Int): Deferred<Response<List<PhotoDto>>>
 }
 
-class HeadHunterApiService {
-  private val baseUrl = "https://api.hh.ru"
-  private val service: HeadHunterApi = Retrofit.Builder()
+class TypicodeApiService {
+  private val baseUrl = "https://jsonplaceholder.typicode.com"
+  private val service: TypicodeApi = Retrofit.Builder()
       .baseUrl(baseUrl)
       .addConverterFactory(GsonConverterFactory.create())
       .addCallAdapterFactory(CoroutineCallAdapterFactory())
       .build()
-      .create(HeadHunterApi::class.java)
+      .create(TypicodeApi::class.java)
 
   fun get() = service
 }

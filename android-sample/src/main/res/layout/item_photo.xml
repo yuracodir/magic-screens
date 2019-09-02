@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yuracodir.sample.widgets.SquareFrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+
+  <ImageView
+    android:layout_gravity="center"
+    android:id="@+id/image"
+    tools:src="@drawable/ic_launcher_foreground"
+    android:scaleType="centerCrop"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+  <TextView
+    style="@style/TextLight"
+    android:id="@+id/title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/blackTransparent10"
+    android:layout_gravity="bottom"
+    android:padding="8dp"
+    android:ellipsize="end"
+    android:maxLines="2"
+    tools:text="title" />
+</com.yuracodir.sample.widgets.SquareFrameLayout>

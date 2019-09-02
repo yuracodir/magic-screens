@@ -13,14 +13,18 @@
     <item name="elevation">4dp</item>
   </style>
 
-  <style name="Title" parent="Text">
-    <item name="android:textSize">16sp</item>
+  <style name="Title" parent="TextAppearance.AppCompat.Title">
   </style>
 
-  <style name="Text">
+  <style name="Text" parent="TextAppearance.AppCompat.Body1">
     <item name="android:textColor">@color/text</item>
     <item name="android:textSize">14sp</item>
   </style>
+
+  <style name="TextLight" parent="Text">
+    <item name="android:textColor">@color/textLight</item>
+  </style>
+
 
   <style name="Description" parent="Text">
     <item name="android:textColor">@color/description</item>

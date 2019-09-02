@@ -5,7 +5,9 @@
   <color name="colorAccent">#FF4081</color>
   <color name="background">#ffffffff</color>
   <color name="text">#cc000000</color>
+  <color name="textLight">#ffffffff</color>
   <color name="description">#66000000</color>
   <color name="stub">#f3f3f3</color>
   <color name="overlay">#99ffffff</color>
+  <color name="blackTransparent10">#1A000000</color>
 </resources>

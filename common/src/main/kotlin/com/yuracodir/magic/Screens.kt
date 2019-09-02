@@ -1,4 +1,4 @@
-package com.estudio.magic
+package com.yuracodir.magic
 
 interface ContainerScreen {
   val childRouter: ScreenRouter

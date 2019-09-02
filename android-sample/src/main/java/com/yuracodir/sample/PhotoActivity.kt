@@ -1,20 +1,22 @@
 package com.yuracodir.sample
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.yuracodir.magic.ContainerScreen
 import com.yuracodir.magic.Screen
 import com.yuracodir.magic.ScreenRouter
 import com.yuracodir.magic.android.AndroidScreen
-import com.yuracodir.sample.data.models.AlbumDto
 import com.yuracodir.sample.data.models.PhotoDto
-import com.yuracodir.sample.ui.AlbumListScreen
-import com.yuracodir.sample.ui.PhotoGridScreen
+import com.yuracodir.sample.ui.PhotoScreen
 
-class MainActivity : Activity(), ContainerScreen {
-  override val childRouter = ActivityRouter(this)
+class PhotoActivity : AppCompatActivity(), ContainerScreen {
+  companion object {
+    const val bundlePhotoList = "bundle_list"
+    const val bundlePhotoSelected = "bundle_selected"
+  }
+
+  override val childRouter = PhotoActivityRouter(this)
   private lateinit var containerView: ViewGroup
 
   override fun attach(screen: Screen<*>) {
@@ -54,24 +56,19 @@ class MainActivity : Activity(), ContainerScreen {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_container)
     containerView = findViewById(R.id.container)
-
-    childRouter.startMainScreen()
+    val intent = intent
+    if (intent == null) {
+      finish()
+      return
+    }
+    val item = intent.getParcelableExtra<PhotoDto>(bundlePhotoSelected)
+    val items = intent.getParcelableArrayListExtra<PhotoDto>(bundlePhotoList)
+    childRouter.startPhotoScreen(item, items)
   }
 }
 
-class ActivityRouter(private val container: MainActivity) : ScreenRouter(container) {
-  fun startMainScreen() {
-    root(AlbumListScreen(container, this))
-  }
-
-  fun startDetailsScreen(data: AlbumDto) {
-    forward(PhotoGridScreen(container, this, data))
-  }
-
-  fun startPhotoScreen(data: PhotoDto, sourceItems: ArrayList<PhotoDto>) {
-    val intent = Intent(container, PhotoActivity::class.java)
-    intent.putParcelableArrayListExtra(PhotoActivity.bundlePhotoList, sourceItems)
-    intent.putExtra(PhotoActivity.bundlePhotoSelected, data)
-    container.startActivity(intent)
+class PhotoActivityRouter(private val activity: PhotoActivity) : ScreenRouter(activity) {
+  fun startPhotoScreen(item: PhotoDto, items: List<PhotoDto>) {
+    root(PhotoScreen(activity, this, item, items))
   }
 }

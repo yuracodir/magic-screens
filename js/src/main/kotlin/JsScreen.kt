@@ -1,9 +1,9 @@
-package com.estudio.magic.js
+package com.yuracodir.magic.js
 
-import com.estudio.magic.ContainerScreen
-import com.estudio.magic.Router
-import com.estudio.magic.Screen
-import com.estudio.magic.ScreenRouter
+import com.yuracodir.magic.ContainerScreen
+import com.yuracodir.magic.Router
+import com.yuracodir.magic.Screen
+import com.yuracodir.magic.ScreenRouter
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.get

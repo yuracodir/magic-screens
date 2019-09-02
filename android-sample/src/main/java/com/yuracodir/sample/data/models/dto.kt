@@ -1,75 +1,58 @@
 package com.yuracodir.sample.data.models
 
-import com.google.gson.annotations.SerializedName
-import com.yuracodir.sample.joinNotNull
+import android.os.Parcel
+import android.os.Parcelable
 
-class VacanciesResponse(val items: List<VacancyPreviewDto>, val pages: Int)
+class AlbumDto(
+  val id: Int,
+  val userId: Int,
+  val title: String)
 
-class VacancyPreviewDto(
-  val id: Long,
-  val name: String,
-  val address: AddressDto?,
-  val salary: SalaryDto?,
-  @SerializedName("alternate_url")
-  val url: String?,
-  val employer: EmployerDto
-)
-
-class VacancyDetailsDto(
-  val id: Long,
-  val name: String,
-  val description: String,
-  val address: AddressDto?,
-  val salary: SalaryDto?,
-  @SerializedName("alternate_url")
+class PhotoDto(
+  val albumId: Int,
+  val id: Int,
+  val title: String,
   val url: String,
-  val employer: EmployerDto,
-  val employment: EmploymentDto,
-  @SerializedName("key_skills")
-  val skills: List<SkillDto>
-)
+  val thumbnailUrl: String) : Parcelable {
+  constructor(parcel: Parcel) : this(
+    parcel.readInt(),
+    parcel.readInt(),
+    parcel.readString() ?: "",
+    parcel.readString() ?: "",
+    parcel.readString() ?: "")
 
-class SkillDto(val name: String)
-
-class EmploymentDto(val id: String, val name: String)
-
-class AddressDto(
-  val city: String?,
-  val street: String?,
-  val building: String?,
-  val description: String
-) {
-  override fun toString(): String {
-    return arrayOf(city, street, building).joinNotNull()
+  override fun equals(other: Any?): Boolean {
+    return other is PhotoDto && other.id == id
   }
-}
 
-class SalaryDto(
-  val from: Int,
-  val to: Int,
-  val currency: String
-) {
-  override fun toString(): String {
-    if (to > 0) {
-      return "$from - $to $currency"
+  override fun writeToParcel(parcel: Parcel, flags: Int) {
+    parcel.writeInt(albumId)
+    parcel.writeInt(id)
+    parcel.writeString(title)
+    parcel.writeString(url)
+    parcel.writeString(thumbnailUrl)
+  }
+
+  override fun describeContents(): Int {
+    return 0
+  }
+
+  override fun hashCode(): Int {
+    var result = albumId
+    result = 31 * result + id
+    result = 31 * result + title.hashCode()
+    result = 31 * result + url.hashCode()
+    result = 31 * result + thumbnailUrl.hashCode()
+    return result
+  }
+
+  companion object CREATOR : Parcelable.Creator<PhotoDto> {
+    override fun createFromParcel(parcel: Parcel): PhotoDto {
+      return PhotoDto(parcel)
     }
-    return "$from $currency"
+
+    override fun newArray(size: Int): Array<PhotoDto?> {
+      return arrayOfNulls(size)
+    }
   }
 }
-
-class EmployerDto(
-  val id: Long,
-  val name: String,
-  @SerializedName("logo_urls")
-  val logo: LogoDto?,
-  @SerializedName("alternate_url")
-  val url: String
-)
-
-class LogoDto(
-  @SerializedName("90")
-  val small: String,
-  @SerializedName("240")
-  val medium: String,
-  val original: String
-)

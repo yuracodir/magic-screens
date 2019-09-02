@@ -5,4 +5,5 @@
   <string name="common_search">Search</string>
   <string name="details_open_link">Open vacancy page</string>
   <string name="details_error_load">Error while loading details. Please, try again later</string>
+  <string name="list_empty_title">List is empty</string>
 </resources>
