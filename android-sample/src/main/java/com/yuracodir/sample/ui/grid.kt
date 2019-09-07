@@ -7,11 +7,11 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import com.yuracodir.magic.android.AndroidScreen
 import com.yuracodir.sample.*
 import com.yuracodir.sample.data.models.AlbumDto
 import com.yuracodir.sample.data.models.PhotoDto
 import com.yuracodir.sample.data.network.TypicodeApi
+import com.yuracodir.screens.android.AndroidScreen
 import kotlinx.android.synthetic.main.item_photo.view.*
 import kotlinx.android.synthetic.main.screen_list.view.*
 

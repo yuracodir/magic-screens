@@ -1,4 +1,4 @@
-package com.yuracodir.magic
+package com.yuracodir.screens
 
 interface ContainerScreen {
   val childRouter: ScreenRouter

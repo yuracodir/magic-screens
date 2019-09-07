@@ -4,14 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
-import com.yuracodir.magic.ContainerScreen
-import com.yuracodir.magic.Screen
-import com.yuracodir.magic.ScreenRouter
-import com.yuracodir.magic.android.AndroidScreen
 import com.yuracodir.sample.data.models.AlbumDto
 import com.yuracodir.sample.data.models.PhotoDto
 import com.yuracodir.sample.ui.AlbumListScreen
 import com.yuracodir.sample.ui.PhotoGridScreen
+import com.yuracodir.screens.ContainerScreen
+import com.yuracodir.screens.Screen
+import com.yuracodir.screens.ScreenRouter
+import com.yuracodir.screens.android.AndroidScreen
 
 class MainActivity : Activity(), ContainerScreen {
   override val childRouter = ActivityRouter(this)

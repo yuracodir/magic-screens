@@ -1,4 +1,4 @@
-package com.yuracodir.magic
+package com.yuracodir.screens
 
 open class Command<T>(val mark: String, val data: T) {
   override fun toString() = mark

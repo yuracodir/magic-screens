@@ -1,14 +1,14 @@
-package com.yuracodir.magic.android
+package com.yuracodir.screens.android
 
 import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import com.yuracodir.magic.ContainerScreen
-import com.yuracodir.magic.Router
-import com.yuracodir.magic.Screen
-import com.yuracodir.magic.ScreenRouter
+import com.yuracodir.screens.ContainerScreen
+import com.yuracodir.screens.Router
+import com.yuracodir.screens.Screen
+import com.yuracodir.screens.ScreenRouter
 
 abstract class AndroidContainerScreen<Ro : Router>(context: Context, router: Ro) :
   AndroidScreen<Ro>(context, router),

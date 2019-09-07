@@ -3,12 +3,12 @@ package com.yuracodir.sample
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import com.yuracodir.magic.ContainerScreen
-import com.yuracodir.magic.Screen
-import com.yuracodir.magic.ScreenRouter
-import com.yuracodir.magic.android.AndroidScreen
 import com.yuracodir.sample.data.models.PhotoDto
 import com.yuracodir.sample.ui.PhotoScreen
+import com.yuracodir.screens.ContainerScreen
+import com.yuracodir.screens.Screen
+import com.yuracodir.screens.ScreenRouter
+import com.yuracodir.screens.android.AndroidScreen
 
 class PhotoActivity : AppCompatActivity(), ContainerScreen {
   companion object {

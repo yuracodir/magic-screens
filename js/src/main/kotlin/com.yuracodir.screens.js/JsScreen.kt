@@ -1,9 +1,9 @@
-package com.yuracodir.magic.js
+package com.yuracodir.screens.js
 
-import com.yuracodir.magic.ContainerScreen
-import com.yuracodir.magic.Router
-import com.yuracodir.magic.Screen
-import com.yuracodir.magic.ScreenRouter
+import com.yuracodir.screens.ContainerScreen
+import com.yuracodir.screens.Router
+import com.yuracodir.screens.Screen
+import com.yuracodir.screens.ScreenRouter
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.get

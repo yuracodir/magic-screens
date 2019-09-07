@@ -7,10 +7,10 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.yuracodir.magic.android.AndroidScreen
 import com.yuracodir.sample.*
 import com.yuracodir.sample.data.models.AlbumDto
 import com.yuracodir.sample.data.network.TypicodeApi
+import com.yuracodir.screens.android.AndroidScreen
 import kotlinx.android.synthetic.main.item_album.view.*
 import kotlinx.android.synthetic.main.screen_list.view.*
 

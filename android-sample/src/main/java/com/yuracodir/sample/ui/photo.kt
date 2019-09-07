@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import com.yuracodir.magic.ScreenRouter
-import com.yuracodir.magic.android.AndroidScreen
 import com.yuracodir.sample.PhotoActivity
 import com.yuracodir.sample.R
 import com.yuracodir.sample.data.models.PhotoDto
 import com.yuracodir.sample.inflate
+import com.yuracodir.screens.ScreenRouter
+import com.yuracodir.screens.android.AndroidScreen
 import kotlinx.android.synthetic.main.item_photo.view.*
 import kotlinx.android.synthetic.main.screen_photo.view.*
 
