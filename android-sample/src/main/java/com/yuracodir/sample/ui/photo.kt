@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import com.yuracodir.sample.PhotoActivity
 import com.yuracodir.sample.R
 import com.yuracodir.sample.data.models.PhotoDto
 import com.yuracodir.sample.inflate
@@ -26,12 +25,12 @@ class PhotoScreen(context: Context, router: ScreenRouter, item: PhotoDto, items:
     super.create()
     root.list.let {
       it.adapter = adapter
-      it.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+      it.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
       PagerSnapHelper().attachToRecyclerView(it)
     }
     root.toolbar.let {
       it.setNavigationIcon(R.drawable.ic_arrow_back)
-      it.setNavigationOnClickListener { (context as PhotoActivity).onBackPressed() }
+      it.setNavigationOnClickListener { presenter.onBack() }
     }
     presenter.onCreate()
   }

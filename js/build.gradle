@@ -2,12 +2,12 @@ apply plugin: 'kotlin-platform-js'
 
 buildscript {
   dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72"
   }
 }
 
 dependencies {
-  compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+  compile "org.jetbrains.kotlin:kotlin-stdlib-js:1.3.72"
   expectedBy project(":common")
 }
 

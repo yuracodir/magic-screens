@@ -3,10 +3,10 @@ apply plugin: 'java-library'
 
 buildscript {
   dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72"
   }
 }
 dependencies {
-  compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  compileOnly "org.jetbrains.kotlin:kotlin-stdlib:1.3.72"
   expectedBy project(":common")
 }

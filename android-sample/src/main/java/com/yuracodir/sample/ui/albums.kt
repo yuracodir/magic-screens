@@ -7,15 +7,19 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.yuracodir.sample.*
+import com.yuracodir.sample.R
 import com.yuracodir.sample.data.models.AlbumDto
 import com.yuracodir.sample.data.network.TypicodeApi
+import com.yuracodir.sample.inflate
+import com.yuracodir.sample.inject
+import com.yuracodir.sample.request
+import com.yuracodir.sample.ui.router.ContextScreenRouter
 import com.yuracodir.screens.android.AndroidScreen
 import kotlinx.android.synthetic.main.item_album.view.*
 import kotlinx.android.synthetic.main.screen_list.view.*
 
-class AlbumListScreen(context: Context, router: ActivityRouter) :
-    AndroidScreen<ActivityRouter>(context, router), SearchView.OnQueryTextListener {
+class AlbumListScreen(context: Context, router: ContextScreenRouter) :
+    AndroidScreen<ContextScreenRouter>(context, router), SearchView.OnQueryTextListener {
   override val root = inflate(context, R.layout.screen_list)
   private val presenter = AlbumListPresenter(this, router)
   private val adapter = AlbumListAdapter(presenter)
@@ -110,7 +114,7 @@ class AlbumViewHolder(
 
 class AlbumListPresenter(
   private val view: AlbumListScreen,
-  private val router: ActivityRouter) {
+  private val router: ContextScreenRouter) {
   private val service: TypicodeApi by inject()
   private val sourceItems = arrayListOf<AlbumDto>()
 
@@ -128,7 +132,9 @@ class AlbumListPresenter(
   }
 
   fun onAlbumClick(data: AlbumDto) {
-    router.startDetailsScreen(data)
+    router.forward {
+      PhotoGridScreen(context, this, data)
+    }
   }
 
   fun onSearchInput(query: String) {
