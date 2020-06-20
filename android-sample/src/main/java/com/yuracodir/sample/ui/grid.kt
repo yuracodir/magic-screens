@@ -7,16 +7,20 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import com.yuracodir.sample.*
+import com.yuracodir.sample.R
 import com.yuracodir.sample.data.models.AlbumDto
 import com.yuracodir.sample.data.models.PhotoDto
 import com.yuracodir.sample.data.network.TypicodeApi
+import com.yuracodir.sample.inflate
+import com.yuracodir.sample.inject
+import com.yuracodir.sample.request
+import com.yuracodir.sample.ui.router.ContextScreenRouter
 import com.yuracodir.screens.android.AndroidScreen
 import kotlinx.android.synthetic.main.item_photo.view.*
 import kotlinx.android.synthetic.main.screen_list.view.*
 
-class PhotoGridScreen(context: Context, router: ActivityRouter, args: AlbumDto) :
-    AndroidScreen<ActivityRouter>(context, router), SearchView.OnQueryTextListener {
+class PhotoGridScreen(context: Context, router: ContextScreenRouter, args: AlbumDto) :
+    AndroidScreen<ContextScreenRouter>(context, router), SearchView.OnQueryTextListener {
   override val root = inflate(context, R.layout.screen_list)
   private val presenter = PhotoGridPresenter(this, router, args)
   private val adapter = PhotoGridAdapter(presenter)
@@ -113,7 +117,7 @@ class PhotoGridViewHolder(
 
 class PhotoGridPresenter(
   private val view: PhotoGridScreen,
-  private val router: ActivityRouter,
+  private val router: ContextScreenRouter,
   private val args: AlbumDto) {
   private val service: TypicodeApi by inject()
   private val sourceItems = arrayListOf<PhotoDto>()
@@ -133,7 +137,9 @@ class PhotoGridPresenter(
   }
 
   fun onPhotoClick(data: PhotoDto) {
-    router.startPhotoScreen(data, sourceItems)
+    router.forward {
+      PhotoScreen(context, this, data, sourceItems)
+    }
   }
 
   fun onSearchInput(query: String) {

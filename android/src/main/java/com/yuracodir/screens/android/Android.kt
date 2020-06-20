@@ -3,24 +3,14 @@ package com.yuracodir.screens.android
 import android.app.Activity
 import android.content.Context
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import com.yuracodir.screens.CallbackScreen
 import com.yuracodir.screens.ContainerScreen
 import com.yuracodir.screens.Router
-import com.yuracodir.screens.Screen
 import com.yuracodir.screens.ScreenRouter
 
 abstract class AndroidContainerScreen<Ro : Router>(context: Context, router: Ro) :
-  AndroidScreen<Ro>(context, router),
-  ContainerScreen {
-
-  protected lateinit var container: ViewGroup
-
-  override fun create() {
-    super.create()
-    container = root.findViewById(R.id.container)
-  }
-
+    AndroidScreen<Ro>(context, router), ContainerScreen {
   override fun pause() {
     super.pause()
     childRouter.navigator.pause()
@@ -40,44 +30,19 @@ abstract class AndroidContainerScreen<Ro : Router>(context: Context, router: Ro)
     val childGoBack = childRouter.currentScreen?.onBack() == true
     return childGoBack || super.onBack()
   }
-
-  override fun attach(screen: Screen<*>) {
-    if (screen is AndroidScreen<*>) {
-      container.addView(screen.root)
-    }
-  }
-
-  override fun detach(screen: Screen<*>) {
-    if (screen is AndroidScreen<*>) {
-      container.removeView(screen.root)
-    }
-  }
 }
 
 abstract class AndroidScreen<R : Router>(
   protected val context: Context,
-  override var router: R) : Screen<R> {
-
+  override var router: R) : CallbackScreen<R>() {
   abstract val root: View
-
-  override fun create() {
-  }
-
-  override fun pause() {
-  }
-
-  override fun resume() {
-  }
-
-  override fun destroy() {
-  }
 
   override fun onBack(): Boolean {
     val router = this.router
     if (router is ScreenRouter) {
-      return router.back()
+      return super.onBack() && router.back()
     }
-    return false
+    return super.onBack()
   }
 
   fun hideKeyboard() {

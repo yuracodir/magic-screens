@@ -1,9 +1,6 @@
 package com.yuracodir.screens.js
 
-import com.yuracodir.screens.ContainerScreen
-import com.yuracodir.screens.Router
-import com.yuracodir.screens.Screen
-import com.yuracodir.screens.ScreenRouter
+import com.yuracodir.screens.*
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.get
@@ -17,14 +14,14 @@ abstract class JsContainerScreen<R : Router>(override var router: R) :
     container = root.getElementsByTagName("container")[0] as HTMLElement
   }
 
-  override fun pause() {
-    super.pause()
-    childRouter.navigator.pause()
-  }
-
   override fun resume() {
     super.resume()
     childRouter.navigator.resume()
+  }
+
+  override fun pause() {
+    super.pause()
+    childRouter.navigator.pause()
   }
 
   override fun destroy() {
@@ -50,18 +47,16 @@ abstract class JsContainerScreen<R : Router>(override var router: R) :
   }
 }
 
-abstract class JsScreen<R : Router>(override var router: R) : Screen<R> {
+abstract class JsScreen<R : Router>(override var router: R) : CallbackScreen<R>() {
+
   abstract var root: Element
-  override fun create() {}
-  override fun destroy() {}
+
   override fun onBack(): Boolean {
+    super.onBack()
     val router = this.router
     if (router is ScreenRouter) {
       return router.back()
     }
     return false
   }
-
-  override fun pause() {}
-  override fun resume() {}
 }

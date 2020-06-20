@@ -6,11 +6,19 @@ interface ContainerScreen {
   fun detach(screen: Screen<*>)
 }
 
+interface ScreenCallback {
+  fun onCreate()
+  fun onPause()
+  fun onResume()
+  fun onDestroy()
+  fun onBack(): Boolean
+}
+
 interface Screen<R : Router> {
   var router: R
   fun create()
-  fun pause()
   fun resume()
+  fun pause()
   fun destroy()
   fun onBack(): Boolean // is Handled ?
   fun getName(): String = ""
@@ -165,16 +173,19 @@ open class ScreenRouter(
   }
 
   override fun navigateTo(command: Command<*>) {
-    when (command) {
-      is Forward -> navigator.forwardScreen(command.data)
-      is Backward -> navigator.backwardScreen(command.data)
-      is Replace -> navigator.replaceScreen(command.data)
-      is Destroy -> navigator.destroyScreen(command.data)
+    val data = command.data
+    if (data is Screen<*>) {
+      when (command) {
+        is Forward -> navigator.forwardScreen(data)
+        is Backward -> navigator.backwardScreen(data)
+        is Replace -> navigator.replaceScreen(data)
+        is Destroy -> navigator.destroyScreen(data)
+      }
     }
   }
 }
 
-open class Forward(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)
-open class Backward(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)
-open class Replace(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)
-open class Destroy(mark: String, screen: Screen<*>) : Command<Screen<*>>(mark, screen)
+open class Forward(mark: String, screen: Any) : Command<Any>(mark, screen)
+open class Backward(mark: String, screen: Any) : Command<Any>(mark, screen)
+open class Replace(mark: String, screen: Any) : Command<Any>(mark, screen)
+open class Destroy(mark: String, screen: Any) : Command<Any>(mark, screen)
