@@ -40,7 +40,7 @@ abstract class AndroidScreen<R : Router>(
   override fun onBack(): Boolean {
     val router = this.router
     if (router is ScreenRouter) {
-      return super.onBack() && router.back()
+      return super.onBack() || router.back()
     }
     return super.onBack()
   }

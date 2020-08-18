@@ -135,57 +135,85 @@ open class ScreenRouter(
   open fun chain(vararg screens: Screen<*>) {
     screens.map { screen ->
       Replace(screen.getName(), screen)
-    }.toTypedArray().let {
-      super.chain(*it)
+    }.let {
+      applyCommand(*it.toTypedArray())
     }
   }
 
   open fun root(screen: Screen<*>) {
-    super.root(Replace(screen.getName(), screen))
+    applyCommand(Root(screen.getName(), screen))
   }
 
   open fun replace(screen: Screen<*>) {
-    super.replace(Replace(screen.getName(), screen))
+    applyCommand(Replace(screen.getName(), screen))
   }
 
   open fun forward(screen: Screen<*>) {
-    super.forward(Forward(screen.getName(), screen))
+    applyCommand(Forward(screen.getName(), screen))
   }
 
   open fun back(mark: String? = null): Boolean {
     if (history.size > 1) {
       if (mark == null) {
         val command = history[history.size - 2]
-        super.back(Backward(command.mark, command.data as Screen<*>))
+        applyCommand(Backward(command.mark, command.data as Screen<*>))
         return true
       } else {
         while (history.size > 1) {
           val command = history[history.size - 2]
           if (command.mark == mark || history.size == 2) {
-            super.back(Backward(command.mark, command.data as Screen<*>))
+            applyCommand(Backward(command.mark, command.data as Screen<*>))
             return true
           }
-          super.back(Destroy(command.mark, command.data as Screen<*>))
+          applyCommand(Destroy(command.mark, command.data as Screen<*>))
         }
       }
     }
     return false
   }
 
-  override fun navigateTo(command: Command<*>) {
-    val data = command.data
+  override fun applyCommand(vararg command: Command<*>) {
+    val lastCommand = command.lastOrNull() ?: return
+    val data = lastCommand.data
+    super.applyCommand(*command)
     if (data is Screen<*>) {
-      when (command) {
+      when (lastCommand) {
         is Forward -> navigator.forwardScreen(data)
         is Backward -> navigator.backwardScreen(data)
-        is Replace -> navigator.replaceScreen(data)
+        is Root, is Replace -> navigator.replaceScreen(data)
         is Destroy -> navigator.destroyScreen(data)
       }
     }
   }
 }
 
-open class Forward(mark: String, screen: Any) : Command<Any>(mark, screen)
-open class Backward(mark: String, screen: Any) : Command<Any>(mark, screen)
-open class Replace(mark: String, screen: Any) : Command<Any>(mark, screen)
-open class Destroy(mark: String, screen: Any) : Command<Any>(mark, screen)
+open class Forward(override val mark: String, override val data: Any) : Command<Any> {
+  override fun applyCommand(history: MutableList<Command<*>>) {
+    history.add(this)
+  }
+}
+
+open class Backward(override val mark: String, override val data: Any) : Command<Any> {
+  override fun applyCommand(history: MutableList<Command<*>>) {
+    history.removeAt(history.lastIndex)
+  }
+}
+
+open class Replace(override val mark: String, override val data: Any) : Command<Any> {
+  override fun applyCommand(history: MutableList<Command<*>>) {
+    history[history.lastIndex] = this
+  }
+}
+
+open class Root(override val mark: String, override val data: Any) : Command<Any> {
+  override fun applyCommand(history: MutableList<Command<*>>) {
+    history.clear()
+    history.add(this)
+  }
+}
+
+open class Destroy(override val mark: String, override val data: Any) : Command<Any> {
+  override fun applyCommand(history: MutableList<Command<*>>) {
+    history.removeAt(history.lastIndex)
+  }
+}
