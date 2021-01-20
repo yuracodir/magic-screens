@@ -105,6 +105,6 @@ class PhotoPresenter(
   }
 
   fun onBack() {
-    view.onBack()
+    view.back()
   }
 }

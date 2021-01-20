@@ -26,9 +26,9 @@ abstract class AndroidContainerScreen<Ro : Router>(context: Context, router: Ro)
     childRouter.navigator.destroy()
   }
 
-  override fun onBack(): Boolean {
-    val childGoBack = childRouter.currentScreen?.onBack() == true
-    return childGoBack || super.onBack()
+  override fun back(): Boolean {
+    val childGoBack = childRouter.currentScreen?.back() == true
+    return childGoBack || super.back()
   }
 }
 
@@ -37,12 +37,12 @@ abstract class AndroidScreen<R : Router>(
   override var router: R) : CallbackScreen<R>() {
   abstract val root: View
 
-  override fun onBack(): Boolean {
+  override fun back(): Boolean {
     val router = this.router
     if (router is ScreenRouter) {
-      return super.onBack() || router.back()
+      return super.back() || router.back()
     }
-    return super.onBack()
+    return super.back()
   }
 
   fun hideKeyboard() {

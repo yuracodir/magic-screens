@@ -29,9 +29,9 @@ abstract class JsContainerScreen<R : Router>(override var router: R) :
     childRouter.navigator.destroy()
   }
 
-  override fun onBack(): Boolean {
-    val childGoBack = childRouter.currentScreen?.onBack() == true
-    return childGoBack || super.onBack()
+  override fun back(): Boolean {
+    val childGoBack = childRouter.currentScreen?.back() == true
+    return childGoBack || super.back()
   }
 
   override fun attach(screen: Screen<*>) {
@@ -51,8 +51,8 @@ abstract class JsScreen<R : Router>(override var router: R) : CallbackScreen<R>(
 
   abstract var root: Element
 
-  override fun onBack(): Boolean {
-    super.onBack()
+  override fun back(): Boolean {
+    super.back()
     val router = this.router
     if (router is ScreenRouter) {
       return router.back()

@@ -41,7 +41,7 @@ class MainActivity : Activity(), ContainerScreen {
   }
 
   override fun onBackPressed() {
-    if (childRouter.currentScreen?.onBack() == false) {
+    if (childRouter.currentScreen?.back() == false) {
       super.onBackPressed()
     }
   }

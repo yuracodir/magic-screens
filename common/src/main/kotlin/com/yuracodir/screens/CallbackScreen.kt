@@ -28,7 +28,7 @@ abstract class CallbackScreen<R : Router> : Screen<R> {
     lifecycleCallbacks.forEach { it.onDestroy() }
   }
 
-  override fun onBack(): Boolean {
+  override fun back(): Boolean {
     return lifecycleCallbacks.any { it.onBack() }
   }
 }

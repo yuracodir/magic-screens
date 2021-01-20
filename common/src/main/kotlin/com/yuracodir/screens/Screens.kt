@@ -20,7 +20,7 @@ interface Screen<R : Router> {
   fun resume()
   fun pause()
   fun destroy()
-  fun onBack(): Boolean // is Handled ?
+  fun back(): Boolean // is Handled ?
   fun getName(): String = ""
 }
 

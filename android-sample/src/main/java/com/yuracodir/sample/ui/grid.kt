@@ -147,7 +147,7 @@ class PhotoGridPresenter(
   }
 
   fun onBack() {
-    view.onBack()
+    view.back()
   }
 
   fun onItemsChange(itemCount: Int) {
